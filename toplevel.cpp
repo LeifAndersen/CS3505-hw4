@@ -296,7 +296,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     actions.insert( Qt::Key_L, Launch );
     actions.insert( Qt::Key_N, NewGame );
 
-    view->showText( tr( "Press N to start playing" ), Qt::yellow );
+    view->showText( tr( "N - 1 Player ---- M - 2 Players" ), Qt::yellow );
 }
 
 KAstTopLevel::~KAstTopLevel()
@@ -530,7 +530,7 @@ void KAstTopLevel::doStats()
       .arg(r);
 */
 
-    view->showText( "Game Over.   Press N for a new game.", Qt::yellow, FALSE );
+    view->showText( "Game Over: N - 1 Player ---- M - 2 Players.", Qt::yellow, FALSE );
 }
 
 void KAstTopLevel::slotUpdateVitals()
