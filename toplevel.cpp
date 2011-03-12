@@ -122,7 +122,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     borderLayout->addStretch( 1 );
 
     QWidget *mainWin = new QWidget( border );
-    mainWin->setFixedSize(832, 624);
+    mainWin->setFixedSize(1024, 768);
     borderLayout->addWidget( mainWin, 0, Qt::AlignHCenter );
 
     borderLayout->addStretch( 1 );
@@ -146,6 +146,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
 
     mainWin->setPalette( pal );
 
+    // Set up top bar
     hb->addSpacing( 10 );
 
     QLabel *label;
@@ -231,6 +232,16 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
 
     hbd->addSpacing( 10 );
 */
+    // Set up bottom bar
+    //player 1
+    label = new QLabel( tr("P1"), mainWin );
+    label->setFont( smallFont );
+    label->setPalette( pal );
+    label->setFixedWidth( label->sizeHint().width() );
+    hbd->addWidget( label );
+
+    hbd->addSpacing( 10 );
+
     QPixmap pm( sprites_prefix + "powerups/brake.png" );
     label = new QLabel( mainWin );
     label->setPixmap( pm );
@@ -277,7 +288,82 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     shootLCD->setFixedHeight( 20 );
     hbd->addWidget( shootLCD );
 
+    hbd->addSpacing( 10 );
+
+    label = new QLabel( tr( "Fuel" ), mainWin );
+    label->setFont( smallFont );
+    label->setFixedWidth( label->sizeHint().width() + 10 );
+    label->setPalette( pal );
+    hbd->addWidget( label );
+
+    powerMeter = new KALedMeter( mainWin );
+    powerMeter->setFrameStyle( Q3Frame::Box | Q3Frame::Plain );
+    powerMeter->setRange( MAX_POWER_LEVEL );
+    powerMeter->addColorRange( 10, Qt::darkRed );
+    powerMeter->addColorRange( 20, QColor(160, 96, 0) );
+    powerMeter->addColorRange( 70, Qt::darkGreen );
+    powerMeter->setCount( 40 );
+    powerMeter->setPalette( pal );
+    powerMeter->setFixedSize( 200, 12 );
+    hbd->addWidget( powerMeter );
+
+    // Player 2
     hbd->addStretch( 1 );
+
+    label = new QLabel( tr("P2"), mainWin );
+    label->setFont( smallFont );
+    label->setPalette( pal );
+    label->setFixedWidth( label->sizeHint().width() );
+    hbd->addWidget( label );
+
+    hbd->addSpacing( 10 );
+
+    label = new QLabel( mainWin );
+    label->setPixmap( pm );
+    label->setFixedWidth( label->sizeHint().width() );
+    label->setPalette( pal );
+    hbd->addWidget( label );
+
+    brakesLCD = new QLCDNumber( 1, mainWin );
+    brakesLCD->setFrameStyle( Q3Frame::NoFrame );
+    brakesLCD->setSegmentStyle( QLCDNumber::Flat );
+    brakesLCD->setPalette( pal );
+    brakesLCD->setFixedHeight( 20 );
+    hbd->addWidget( brakesLCD );
+
+    hbd->addSpacing( 10 );
+
+    pm.load( sprites_prefix + "powerups/shield.png" );
+    label = new QLabel( mainWin );
+    label->setPixmap( pm );
+    label->setFixedWidth( label->sizeHint().width() );
+    label->setPalette( pal );
+    hbd->addWidget( label );
+
+    shieldLCD = new QLCDNumber( 1, mainWin );
+    shieldLCD->setFrameStyle( Q3Frame::NoFrame );
+    shieldLCD->setSegmentStyle( QLCDNumber::Flat );
+    shieldLCD->setPalette( pal );
+    shieldLCD->setFixedHeight( 20 );
+    hbd->addWidget( shieldLCD );
+
+    hbd->addSpacing( 10 );
+
+    pm.load( sprites_prefix + "powerups/shoot.png" );
+    label = new QLabel( mainWin );
+    label->setPixmap( pm );
+    label->setFixedWidth( label->sizeHint().width() );
+    label->setPalette( pal );
+    hbd->addWidget( label );
+
+    shootLCD = new QLCDNumber( 1, mainWin );
+    shootLCD->setFrameStyle( Q3Frame::NoFrame );
+    shootLCD->setSegmentStyle( QLCDNumber::Flat );
+    shootLCD->setPalette( pal );
+    shootLCD->setFixedHeight( 20 );
+    hbd->addWidget( shootLCD );
+
+    hbd->addSpacing( 10 );
 
     label = new QLabel( tr( "Fuel" ), mainWin );
     label->setFont( smallFont );
