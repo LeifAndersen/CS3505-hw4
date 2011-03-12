@@ -122,7 +122,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     borderLayout->addStretch( 1 );
 
     QWidget *mainWin = new QWidget( border );
-    mainWin->setFixedSize(640, 480);
+    mainWin->setFixedSize(832, 624);
     borderLayout->addWidget( mainWin, 0, Qt::AlignHCenter );
 
     borderLayout->addStretch( 1 );
@@ -149,7 +149,21 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     hb->addSpacing( 10 );
 
     QLabel *label;
-    label = new QLabel( tr("Score"), mainWin );
+    label = new QLabel( tr("P1:Score"), mainWin );
+    label->setFont( labelFont );
+    label->setPalette( pal );
+    label->setFixedWidth( label->sizeHint().width() );
+    hb->addWidget( label );
+
+    scoreLCD = new QLCDNumber( 6, mainWin );
+    scoreLCD->setFrameStyle( Q3Frame::NoFrame );
+    scoreLCD->setSegmentStyle( QLCDNumber::Flat );
+    scoreLCD->setFixedWidth( 150 );
+    scoreLCD->setPalette( pal );
+    hb->addWidget( scoreLCD );
+    hb->addStretch( 10 );
+
+    label = new QLabel( tr("P2:Score"), mainWin );
     label->setFont( labelFont );
     label->setPalette( pal );
     label->setFixedWidth( label->sizeHint().width() );
