@@ -155,12 +155,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setFixedWidth( label->sizeHint().width() );
     hb->addWidget( label );
 
-    scoreLCD = new QLCDNumber( 6, mainWin );
-    scoreLCD->setFrameStyle( Q3Frame::NoFrame );
-    scoreLCD->setSegmentStyle( QLCDNumber::Flat );
-    scoreLCD->setFixedWidth( 150 );
-    scoreLCD->setPalette( pal );
-    hb->addWidget( scoreLCD );
+    p1scoreLCD = new QLCDNumber( 6, mainWin );
+    p1scoreLCD->setFrameStyle( Q3Frame::NoFrame );
+    p1scoreLCD->setSegmentStyle( QLCDNumber::Flat );
+    p1scoreLCD->setFixedWidth( 150 );
+    p1scoreLCD->setPalette( pal );
+    hb->addWidget( p1scoreLCD );
     hb->addStretch( 10 );
 
     label = new QLabel( tr("P2:Score"), mainWin );
@@ -169,12 +169,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setFixedWidth( label->sizeHint().width() );
     hb->addWidget( label );
 
-    scoreLCD = new QLCDNumber( 6, mainWin );
-    scoreLCD->setFrameStyle( Q3Frame::NoFrame );
-    scoreLCD->setSegmentStyle( QLCDNumber::Flat );
-    scoreLCD->setFixedWidth( 150 );
-    scoreLCD->setPalette( pal );
-    hb->addWidget( scoreLCD );
+    p2scoreLCD = new QLCDNumber( 6, mainWin );
+    p2scoreLCD->setFrameStyle( Q3Frame::NoFrame );
+    p2scoreLCD->setSegmentStyle( QLCDNumber::Flat );
+    p2scoreLCD->setFixedWidth( 150 );
+    p2scoreLCD->setPalette( pal );
+    hb->addWidget( p2scoreLCD );
     hb->addStretch( 10 );
 
     label = new QLabel( tr("Level"), mainWin );
@@ -461,7 +461,8 @@ void KAstTopLevel::slotNewGame()
 {
     score = 0;
     shipsRemain = SB_SHIPS;
-    scoreLCD->display( 0 );
+    p1scoreLCD->display( 0 );
+    p2scoreLCD->display( 0 );
     level = 0;
     levelLCD->display( level+1 );
     shipsLCD->display( shipsRemain-1 );
@@ -514,7 +515,7 @@ void KAstTopLevel::slotRockHit( int size )
 
     playSound( "RockDestroyed" );
 
-    scoreLCD->display( score );
+    p1scoreLCD->display( score );
 }
 
 void KAstTopLevel::slotRocksRemoved()

@@ -93,7 +93,8 @@ private slots:
 
 private:
     KAsteroidsView *view;
-    QLCDNumber *scoreLCD;
+    QLCDNumber *p1scoreLCD;
+    QLCDNumber *p2scoreLCD;
     QLCDNumber *levelLCD;
     QLCDNumber *shipsLCD;
 
