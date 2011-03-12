@@ -113,7 +113,8 @@ private:
     bool isPaused;
 
     int shipsRemain;
-    int score;
+    int p1score;
+    int p2score;
     int level;
     bool showHiscores;
 

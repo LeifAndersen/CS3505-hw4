@@ -141,7 +141,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
 
     QFont labelFont( "helvetica", 24 );
     QColorGroup grp( Qt::darkGreen, Qt::black, QColor( 128, 128, 128 ),
-	    QColor( 64, 64, 64 ), Qt::black, Qt::darkGreen, Qt::black );
+        QColor( 64, 64, 64 ), Qt::black, Qt::darkGreen, Qt::black );
     QPalette pal( grp, grp, grp );
 
     mainWin->setPalette( pal );
@@ -459,7 +459,8 @@ void KAstTopLevel::hideEvent( QHideEvent *e )
 
 void KAstTopLevel::slotNewGame()
 {
-    score = 0;
+    p1score = 0;
+    p2score = 0;
     shipsRemain = SB_SHIPS;
     p1scoreLCD->display( 0 );
     p2scoreLCD->display( 0 );
@@ -492,7 +493,7 @@ void KAstTopLevel::slotShipKilled()
     {
         view->showText( tr("Game Over!"), Qt::red );
         view->endGame();
-	doStats();
+    doStats();
 //        highscore->addEntry( score, level, showHiscores );
     }
 }
@@ -502,20 +503,21 @@ void KAstTopLevel::slotRockHit( int size )
     switch ( size )
     {
 	case 0:
-	    score += 10;
-	     break;
+        p1score += 10;
+         break;
 
 	case 1:
-	    score += 20;
+        p1score += 20;
 	    break;
 
 	default:
-	    score += 40;
+        p1score += 40;
       }
 
     playSound( "RockDestroyed" );
 
-    p1scoreLCD->display( score );
+    p1scoreLCD->display( p1score );
+    p2scoreLCD->display( p2score );
 }
 
 void KAstTopLevel::slotRocksRemoved()
@@ -523,7 +525,7 @@ void KAstTopLevel::slotRocksRemoved()
     level++;
 
     if ( level >= MAX_LEVELS )
-	level = MAX_LEVELS - 1;
+    level = MAX_LEVELS - 1;
 
     view->setRockSpeed( levels[level-1].rockSpeed );
     view->addRocks( levels[level-1].nrocks );
@@ -535,8 +537,8 @@ void KAstTopLevel::doStats()
 {
     QString r( "0.00" );
     if ( view->shots() )
-	 r = QString::number( (double)view->hits() / view->shots() * 100.0,
-			     'g', 2 );
+     r = QString::number( (double)view->hits() / view->shots() * 100.0,
+                 'g', 2 );
 
 /* multi-line text broken in Qt 3
     QString s = tr( "Game Over\n\nShots fired:\t%1\n  Hit:\t%2\n  Missed:\t%3\nHit ratio:\t%4 %\n\nPress N for a new game" )
