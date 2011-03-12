@@ -162,7 +162,23 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     p1scoreLCD->setFixedWidth( 150 );
     p1scoreLCD->setPalette( pal );
     hb->addWidget( p1scoreLCD );
-    hb->addStretch( 10 );
+    hb->addStretch( 30 );
+
+    label = new QLabel( tr("Ships"), mainWin );
+    label->setFont( labelFont );
+    label->setFixedWidth( label->sizeHint().width() );
+    label->setPalette( pal );
+    hb->addWidget( label );
+
+    shipsLCD = new QLCDNumber( 1, mainWin );
+    shipsLCD->setFrameStyle( Q3Frame::NoFrame );
+    shipsLCD->setSegmentStyle( QLCDNumber::Flat );
+    shipsLCD->setFixedWidth( 40 );
+    shipsLCD->setPalette( pal );
+    hb->addWidget( shipsLCD );
+
+    hb->addStrut( 30 );
+    hb->addStretch( 30 );
 
     label = new QLabel( tr("P2:Score"), mainWin );
     label->setFont( labelFont );
@@ -176,20 +192,6 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     p2scoreLCD->setFixedWidth( 150 );
     p2scoreLCD->setPalette( pal );
     hb->addWidget( p2scoreLCD );
-    hb->addStretch( 10 );
-
-    label = new QLabel( tr("Level"), mainWin );
-    label->setFont( labelFont );
-    label->setPalette( pal );
-    label->setFixedWidth( label->sizeHint().width() );
-    hb->addWidget( label );
-
-    levelLCD = new QLCDNumber( 2, mainWin );
-    levelLCD->setFrameStyle( Q3Frame::NoFrame );
-    levelLCD->setSegmentStyle( QLCDNumber::Flat );
-    levelLCD->setFixedWidth( 70 );
-    levelLCD->setPalette( pal );
-    hb->addWidget( levelLCD );
     hb->addStretch( 10 );
 
     label = new QLabel( tr("Ships"), mainWin );
@@ -206,6 +208,20 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     hb->addWidget( shipsLCD );
 
     hb->addStrut( 30 );
+    hb->addStretch( 30 );
+
+    label = new QLabel( tr("Level"), mainWin );
+    label->setFont( labelFont );
+    label->setPalette( pal );
+    label->setFixedWidth( label->sizeHint().width() );
+    hb->addWidget( label );
+
+    levelLCD = new QLCDNumber( 2, mainWin );
+    levelLCD->setFrameStyle( Q3Frame::NoFrame );
+    levelLCD->setSegmentStyle( QLCDNumber::Flat );
+    levelLCD->setFixedWidth( 70 );
+    levelLCD->setPalette( pal );
+    hb->addWidget( levelLCD );
 
     vb->addWidget( view, 10 );
 
