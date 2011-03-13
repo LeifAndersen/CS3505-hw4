@@ -57,7 +57,7 @@
 #include <QKeyEvent>
 
 #include "view.h"
-
+#include "player.h"
 
 class KALedMeter;
 QT_BEGIN_NAMESPACE
@@ -93,17 +93,8 @@ private slots:
 
 private:
     KAsteroidsView *view;
-    QLCDNumber *p1scoreLCD;
-    QLCDNumber *p2scoreLCD;
-    QLCDNumber *levelLCD;
-    QLCDNumber *shipsLCD;
 
-    QLCDNumber *teleportsLCD;
-//    QLCDNumber *bombsLCD;
-    QLCDNumber *brakesLCD;
-    QLCDNumber *shieldLCD;
-    QLCDNumber *shootLCD;
-    KALedMeter *powerMeter;
+    QLCDNumber *levelLCD;
 
     bool   sound;
     Q3Dict<QString> soundDict;
@@ -111,10 +102,8 @@ private:
     // waiting for user to press Enter to launch a ship
     bool waitShip;
     bool isPaused;
-
-    int shipsRemain;
-    int p1score;
-    int p2score;
+    Player *player1;
+    Player *player2;
     int level;
     bool showHiscores;
 

@@ -146,6 +146,10 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
 
     mainWin->setPalette( pal );
 
+    // Set up the players
+    player1 = new Player();
+    player2 = new Player();
+
     // Set up top bar
     hb->addSpacing( 10 );
 
@@ -156,12 +160,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setFixedWidth( label->sizeHint().width() );
     hb->addWidget( label );
 
-    p1scoreLCD = new QLCDNumber( 6, mainWin );
-    p1scoreLCD->setFrameStyle( Q3Frame::NoFrame );
-    p1scoreLCD->setSegmentStyle( QLCDNumber::Flat );
-    p1scoreLCD->setFixedWidth( 150 );
-    p1scoreLCD->setPalette( pal );
-    hb->addWidget( p1scoreLCD );
+    player1->scoreLCD = new QLCDNumber( 6, mainWin );
+    player1->scoreLCD->setFrameStyle( Q3Frame::NoFrame );
+    player1->scoreLCD->setSegmentStyle( QLCDNumber::Flat );
+    player1->scoreLCD->setFixedWidth( 150 );
+    player1->scoreLCD->setPalette( pal );
+    hb->addWidget( player1->scoreLCD );
     hb->addStretch( 30 );
 
     label = new QLabel( tr("Ships"), mainWin );
@@ -170,12 +174,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hb->addWidget( label );
 
-    shipsLCD = new QLCDNumber( 1, mainWin );
-    shipsLCD->setFrameStyle( Q3Frame::NoFrame );
-    shipsLCD->setSegmentStyle( QLCDNumber::Flat );
-    shipsLCD->setFixedWidth( 40 );
-    shipsLCD->setPalette( pal );
-    hb->addWidget( shipsLCD );
+    player1->shipsLCD = new QLCDNumber( 1, mainWin );
+    player1->shipsLCD->setFrameStyle( Q3Frame::NoFrame );
+    player1->shipsLCD->setSegmentStyle( QLCDNumber::Flat );
+    player1->shipsLCD->setFixedWidth( 40 );
+    player1->shipsLCD->setPalette( pal );
+    hb->addWidget( player1->shipsLCD );
 
     hb->addStrut( 30 );
     hb->addStretch( 30 );
@@ -186,12 +190,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setFixedWidth( label->sizeHint().width() );
     hb->addWidget( label );
 
-    p2scoreLCD = new QLCDNumber( 6, mainWin );
-    p2scoreLCD->setFrameStyle( Q3Frame::NoFrame );
-    p2scoreLCD->setSegmentStyle( QLCDNumber::Flat );
-    p2scoreLCD->setFixedWidth( 150 );
-    p2scoreLCD->setPalette( pal );
-    hb->addWidget( p2scoreLCD );
+    player2->scoreLCD = new QLCDNumber( 6, mainWin );
+    player2->scoreLCD->setFrameStyle( Q3Frame::NoFrame );
+    player2->scoreLCD->setSegmentStyle( QLCDNumber::Flat );
+    player2->scoreLCD->setFixedWidth( 150 );
+    player2->scoreLCD->setPalette( pal );
+    hb->addWidget( player2->scoreLCD );
     hb->addStretch( 10 );
 
     label = new QLabel( tr("Ships"), mainWin );
@@ -200,12 +204,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hb->addWidget( label );
 
-    shipsLCD = new QLCDNumber( 1, mainWin );
-    shipsLCD->setFrameStyle( Q3Frame::NoFrame );
-    shipsLCD->setSegmentStyle( QLCDNumber::Flat );
-    shipsLCD->setFixedWidth( 40 );
-    shipsLCD->setPalette( pal );
-    hb->addWidget( shipsLCD );
+    player2->shipsLCD = new QLCDNumber( 1, mainWin );
+    player2->shipsLCD->setFrameStyle( Q3Frame::NoFrame );
+    player2->shipsLCD->setSegmentStyle( QLCDNumber::Flat );
+    player2->shipsLCD->setFixedWidth( 40 );
+    player2->shipsLCD->setPalette( pal );
+    hb->addWidget( player2->shipsLCD );
 
     hb->addStrut( 30 );
     hb->addStretch( 30 );
@@ -265,12 +269,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hbd->addWidget( label );
 
-    brakesLCD = new QLCDNumber( 1, mainWin );
-    brakesLCD->setFrameStyle( Q3Frame::NoFrame );
-    brakesLCD->setSegmentStyle( QLCDNumber::Flat );
-    brakesLCD->setPalette( pal );
-    brakesLCD->setFixedHeight( 20 );
-    hbd->addWidget( brakesLCD );
+    player1->brakesLCD = new QLCDNumber( 1, mainWin );
+    player1->brakesLCD->setFrameStyle( Q3Frame::NoFrame );
+    player1->brakesLCD->setSegmentStyle( QLCDNumber::Flat );
+    player1->brakesLCD->setPalette( pal );
+    player1->brakesLCD->setFixedHeight( 20 );
+    hbd->addWidget( player1->brakesLCD );
 
     hbd->addSpacing( 10 );
 
@@ -281,12 +285,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hbd->addWidget( label );
 
-    shieldLCD = new QLCDNumber( 1, mainWin );
-    shieldLCD->setFrameStyle( Q3Frame::NoFrame );
-    shieldLCD->setSegmentStyle( QLCDNumber::Flat );
-    shieldLCD->setPalette( pal );
-    shieldLCD->setFixedHeight( 20 );
-    hbd->addWidget( shieldLCD );
+    player1->shieldLCD = new QLCDNumber( 1, mainWin );
+    player1->shieldLCD->setFrameStyle( Q3Frame::NoFrame );
+    player1->shieldLCD->setSegmentStyle( QLCDNumber::Flat );
+    player1->shieldLCD->setPalette( pal );
+    player1->shieldLCD->setFixedHeight( 20 );
+    hbd->addWidget( player1->shieldLCD );
 
     hbd->addSpacing( 10 );
 
@@ -297,12 +301,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hbd->addWidget( label );
 
-    shootLCD = new QLCDNumber( 1, mainWin );
-    shootLCD->setFrameStyle( Q3Frame::NoFrame );
-    shootLCD->setSegmentStyle( QLCDNumber::Flat );
-    shootLCD->setPalette( pal );
-    shootLCD->setFixedHeight( 20 );
-    hbd->addWidget( shootLCD );
+    player1->shootLCD = new QLCDNumber( 1, mainWin );
+    player1->shootLCD->setFrameStyle( Q3Frame::NoFrame );
+    player1->shootLCD->setSegmentStyle( QLCDNumber::Flat );
+    player1->shootLCD->setPalette( pal );
+    player1->shootLCD->setFixedHeight( 20 );
+    hbd->addWidget( player1->shootLCD );
 
     hbd->addSpacing( 10 );
 
@@ -312,16 +316,16 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hbd->addWidget( label );
 
-    powerMeter = new KALedMeter( mainWin );
-    powerMeter->setFrameStyle( Q3Frame::Box | Q3Frame::Plain );
-    powerMeter->setRange( MAX_POWER_LEVEL );
-    powerMeter->addColorRange( 10, Qt::darkRed );
-    powerMeter->addColorRange( 20, QColor(160, 96, 0) );
-    powerMeter->addColorRange( 70, Qt::darkGreen );
-    powerMeter->setCount( 40 );
-    powerMeter->setPalette( pal );
-    powerMeter->setFixedSize( 200, 12 );
-    hbd->addWidget( powerMeter );
+    player1->powerMeter = new KALedMeter( mainWin );
+    player1->powerMeter->setFrameStyle( Q3Frame::Box | Q3Frame::Plain );
+    player1->powerMeter->setRange( MAX_POWER_LEVEL );
+    player1->powerMeter->addColorRange( 10, Qt::darkRed );
+    player1->powerMeter->addColorRange( 20, QColor(160, 96, 0) );
+    player1->powerMeter->addColorRange( 70, Qt::darkGreen );
+    player1->powerMeter->setCount( 40 );
+    player1->powerMeter->setPalette( pal );
+    player1->powerMeter->setFixedSize( 200, 12 );
+    hbd->addWidget( player1->powerMeter );
 
     // Player 2
     hbd->addStretch( 1 );
@@ -340,12 +344,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hbd->addWidget( label );
 
-    brakesLCD = new QLCDNumber( 1, mainWin );
-    brakesLCD->setFrameStyle( Q3Frame::NoFrame );
-    brakesLCD->setSegmentStyle( QLCDNumber::Flat );
-    brakesLCD->setPalette( pal );
-    brakesLCD->setFixedHeight( 20 );
-    hbd->addWidget( brakesLCD );
+    player2->brakesLCD = new QLCDNumber( 1, mainWin );
+    player2->brakesLCD->setFrameStyle( Q3Frame::NoFrame );
+    player2->brakesLCD->setSegmentStyle( QLCDNumber::Flat );
+    player2->brakesLCD->setPalette( pal );
+    player2->brakesLCD->setFixedHeight( 20 );
+    hbd->addWidget( player2->brakesLCD );
 
     hbd->addSpacing( 10 );
 
@@ -356,12 +360,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hbd->addWidget( label );
 
-    shieldLCD = new QLCDNumber( 1, mainWin );
-    shieldLCD->setFrameStyle( Q3Frame::NoFrame );
-    shieldLCD->setSegmentStyle( QLCDNumber::Flat );
-    shieldLCD->setPalette( pal );
-    shieldLCD->setFixedHeight( 20 );
-    hbd->addWidget( shieldLCD );
+    player2->shieldLCD = new QLCDNumber( 1, mainWin );
+    player2->shieldLCD->setFrameStyle( Q3Frame::NoFrame );
+    player2->shieldLCD->setSegmentStyle( QLCDNumber::Flat );
+    player2->shieldLCD->setPalette( pal );
+    player2->shieldLCD->setFixedHeight( 20 );
+    hbd->addWidget( player2->shieldLCD );
 
     hbd->addSpacing( 10 );
 
@@ -372,12 +376,12 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hbd->addWidget( label );
 
-    shootLCD = new QLCDNumber( 1, mainWin );
-    shootLCD->setFrameStyle( Q3Frame::NoFrame );
-    shootLCD->setSegmentStyle( QLCDNumber::Flat );
-    shootLCD->setPalette( pal );
-    shootLCD->setFixedHeight( 20 );
-    hbd->addWidget( shootLCD );
+    player2->shootLCD = new QLCDNumber( 1, mainWin );
+    player2->shootLCD->setFrameStyle( Q3Frame::NoFrame );
+    player2->shootLCD->setSegmentStyle( QLCDNumber::Flat );
+    player2->shootLCD->setPalette( pal );
+    player2->shootLCD->setFixedHeight( 20 );
+    hbd->addWidget( player2->shootLCD );
 
     hbd->addSpacing( 10 );
 
@@ -387,18 +391,19 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     label->setPalette( pal );
     hbd->addWidget( label );
 
-    powerMeter = new KALedMeter( mainWin );
-    powerMeter->setFrameStyle( Q3Frame::Box | Q3Frame::Plain );
-    powerMeter->setRange( MAX_POWER_LEVEL );
-    powerMeter->addColorRange( 10, Qt::darkRed );
-    powerMeter->addColorRange( 20, QColor(160, 96, 0) );
-    powerMeter->addColorRange( 70, Qt::darkGreen );
-    powerMeter->setCount( 40 );
-    powerMeter->setPalette( pal );
-    powerMeter->setFixedSize( 200, 12 );
-    hbd->addWidget( powerMeter );
+    player2->powerMeter = new KALedMeter( mainWin );
+    player2->powerMeter->setFrameStyle( Q3Frame::Box | Q3Frame::Plain );
+    player2->powerMeter->setRange( MAX_POWER_LEVEL );
+    player2->powerMeter->addColorRange( 10, Qt::darkRed );
+    player2->powerMeter->addColorRange( 20, QColor(160, 96, 0) );
+    player2->powerMeter->addColorRange( 70, Qt::darkGreen );
+    player2->powerMeter->setCount( 40 );
+    player2->powerMeter->setPalette( pal );
+    player2->powerMeter->setFixedSize( 200, 12 );
+    hbd->addWidget( player2->powerMeter );
 
-    shipsRemain = 3;
+    player1->shipsRemain = 3;
+    player2->shipsRemain = 3;
     showHiscores = FALSE;
 
     actions.insert( Qt::Key_Up, Thrust );
@@ -561,14 +566,15 @@ void KAstTopLevel::hideEvent( QHideEvent *e )
 
 void KAstTopLevel::slotNewGame()
 {
-    p1score = 0;
-    p2score = 0;
-    shipsRemain = SB_SHIPS;
-    p1scoreLCD->display( 0 );
-    p2scoreLCD->display( 0 );
+    player1->score = 0;
+    player2->score = 0;
+    player1->shipsRemain = SB_SHIPS;
+    player1->scoreLCD->display( 0 );
+    player2->scoreLCD->display( 0 );
     level = 0;
     levelLCD->display( level+1 );
-    shipsLCD->display( shipsRemain-1 );
+    player1->shipsLCD->display( player1->shipsRemain-1 );
+    player2->shipsLCD->display( player2->shipsRemain-1 );
     view->newGame();
     view->setRockSpeed( levels[0].rockSpeed );
     view->addRocks( levels[0].nrocks );
@@ -581,12 +587,12 @@ void KAstTopLevel::slotNewGame()
 
 void KAstTopLevel::slotShipKilled()
 {
-    shipsRemain--;
-    shipsLCD->display( shipsRemain-1 );
+    player1->shipsRemain--;
+    player1->shipsLCD->display( player1->shipsRemain-1 );
 
     playSound( "ShipDestroyed" );
 
-    if ( shipsRemain )
+    if ( player1->shipsRemain )
     {
         waitShip = TRUE;
         view->showText( tr( "Ship Destroyed. Press L to launch."), Qt::yellow );
@@ -605,21 +611,21 @@ void KAstTopLevel::slotRockHit( int size )
     switch ( size )
     {
 	case 0:
-        p1score += 10;
+        player1->score += 10;
          break;
 
 	case 1:
-        p1score += 20;
+        player1->score += 20;
 	    break;
 
 	default:
-        p1score += 40;
+        player1->score += 40;
       }
 
     playSound( "RockDestroyed" );
 
-    p1scoreLCD->display( p1score );
-    p2scoreLCD->display( p2score );
+    player1->scoreLCD->display( player1->score );
+    player2->scoreLCD->display( player1->score );
 }
 
 void KAstTopLevel::slotRocksRemoved()
@@ -654,9 +660,9 @@ void KAstTopLevel::doStats()
 
 void KAstTopLevel::slotUpdateVitals()
 {
-    brakesLCD->display( view->brakeCount() );
-    shieldLCD->display( view->shieldCount() );
-    shootLCD->display( view->shootCount() );
+    player1->brakesLCD->display( view->brakeCount() );
+    player1->shieldLCD->display( view->shieldCount() );
+    player1->shootLCD->display( view->shootCount() );
 //    teleportsLCD->display( view->teleportCount() );
-    powerMeter->setValue( view->power() );
+    player1->powerMeter->setValue( view->power() );
 }
