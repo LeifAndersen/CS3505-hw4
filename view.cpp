@@ -614,30 +614,30 @@ void KAsteroidsView::processMissiles()
 
     for ( ; it.current(); ++it )
     {
-	missile = it.current();
-	missile->growOlder();
+        missile = it.current();
+        missile->growOlder();
 
-	if ( missile->expired() )
-	{
-	    missiles.removeRef( missile );
-	    continue;
-	}
+        if ( missile->expired() )
+        {
+            missiles.removeRef( missile );
+            continue;
+        }
 
-	wrapSprite( missile );
+        wrapSprite( missile );
 
-	QList<QGraphicsItem *> hits = missile->collidingItems(Qt::IntersectsItemBoundingRect);
-	QList<QGraphicsItem *>::Iterator hit;
-	for ( hit = hits.begin(); hit != hits.end(); ++hit )
-	{
-	    if ( (*hit)->type() >= ID_ROCK_LARGE &&
-		 (*hit)->type() <= ID_ROCK_SMALL && (*hit)->collidesWithItem(missile) )
-	    {
+        QList<QGraphicsItem *> hits = missile->collidingItems(Qt::IntersectsItemBoundingRect);
+        QList<QGraphicsItem *>::Iterator hit;
+        for ( hit = hits.begin(); hit != hits.end(); ++hit )
+        {
+            if ( (*hit)->type() >= ID_ROCK_LARGE &&
+                 (*hit)->type() <= ID_ROCK_SMALL && (*hit)->collidesWithItem(missile) )
+            {
                 shotsHit++;
                 rockHit( static_cast<AnimatedPixmapItem *>(*hit) );
                 missiles.removeRef( missile );
                 break;
-	    }
-	}
+            }
+        }
     }
 }
 
@@ -821,7 +821,7 @@ void KAsteroidsView::processShip()
 
 	if ( shootShip )
 	{
-	    if ( !shootDelay && (int)missiles.count() < mShootCount + 2 )
+        if ( !shootDelay && (int)missiles.count() < mShootCount + 4 )
 	    {
 	      KMissile *missile = new KMissile( animation[ID_MISSILE], &field );
 	      missile->setPos( 21+ship->x()+cosangle*21,

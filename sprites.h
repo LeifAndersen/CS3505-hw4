@@ -68,9 +68,9 @@
 #define ID_SHIP                 1350
 #define ID_SHIELD               1351
 
-#define MAX_SHIELD_AGE          350
-#define MAX_POWERUP_AGE         500
-#define MAX_MISSILE_AGE         40
+#define MAX_SHIELD_AGE          525
+#define MAX_POWERUP_AGE         750
+#define MAX_MISSILE_AGE         60
 
 class KMissile : public AnimatedPixmapItem
 {

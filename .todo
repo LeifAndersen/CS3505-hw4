@@ -9,4 +9,10 @@
     <note priority="medium" time="1299959538">
         Get two ship objects
     </note>
+    <note priority="medium" time="1299978023" done="1299978624">
+        Make bullot go further
+        <comment>
+            It was in some constants in sprites.h
+        </comment>
+    </note>
 </todo>
