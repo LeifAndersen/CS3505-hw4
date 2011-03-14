@@ -12,3 +12,8 @@ Settings::~Settings()
 {
     delete ui;
 }
+
+Settings::keyPressEvent(QKeyEvent *event)
+{
+
+}

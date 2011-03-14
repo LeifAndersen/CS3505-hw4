@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::Settings *ui;
+
+protected:
+    virtual void keyPressEvent( QKeyEvent *event );
 };
 
 #endif // SETTINGS_H
