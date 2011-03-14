@@ -29,20 +29,7 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>46</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="Player1Title">
    <property name="geometry">
     <rect>
      <x>60</x>
@@ -55,7 +42,7 @@
     <string>PLAYER 1</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="Player1a">
    <property name="geometry">
     <rect>
      <x>70</x>
@@ -68,7 +55,7 @@
     <string>Thrust</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="Player1_Thrust">
    <property name="geometry">
     <rect>
      <x>70</x>
@@ -77,8 +64,11 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
   </widget>
-  <widget class="QLabel" name="label_4">
+  <widget class="QLabel" name="Player1b">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -91,7 +81,7 @@
     <string>Left</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QLabel" name="Player1d">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -104,7 +94,7 @@
     <string>Shoot</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
+  <widget class="QLabel" name="Player1c">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -117,7 +107,7 @@
     <string>Right</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_8">
+  <widget class="QLabel" name="Player1e">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -130,7 +120,7 @@
     <string>Shield</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_7">
+  <widget class="QLabel" name="Player1f">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -143,7 +133,7 @@
     <string>Brake</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="Player1_left">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -152,8 +142,11 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
+  <widget class="QLineEdit" name="Player1_right">
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -162,8 +155,11 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_4">
+  <widget class="QLineEdit" name="Player1_shoot">
    <property name="geometry">
     <rect>
      <x>60</x>
@@ -172,8 +168,11 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_5">
+  <widget class="QLineEdit" name="Player1_shield">
    <property name="geometry">
     <rect>
      <x>60</x>
@@ -182,8 +181,11 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_6">
+  <widget class="QLineEdit" name="Player1_break">
    <property name="geometry">
     <rect>
      <x>60</x>
@@ -191,6 +193,178 @@
      <width>21</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="Player2_thust">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>80</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="Player2_shield">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>170</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Player2Title">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>20</y>
+     <width>46</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PLAYER 2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Player2e">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>170</y>
+     <width>31</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Shield</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Player2b">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>90</y>
+     <width>21</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Left</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Player2c">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>90</y>
+     <width>31</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Right</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="Player2_brake">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>200</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Player2a">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>60</y>
+     <width>31</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Thrust</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Player2f">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>200</y>
+     <width>31</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Brake</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="Playe2_Shoot">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>140</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Player2d">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>140</y>
+     <width>31</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Shoot</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="Player2_left">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>100</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="maxLength">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="Player2_right">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>100</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="maxLength">
+    <number>1</number>
    </property>
   </widget>
  </widget>
