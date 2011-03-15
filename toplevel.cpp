@@ -114,6 +114,11 @@ const char *soundDefaults[] =
 KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     : Q3MainWindow( parent, name, 0 )
 {
+
+    // Set up the players
+    player1 = new Player();
+    player2 = new Player();
+
     QWidget *border = new QWidget( this );
     border->setBackgroundColor( Qt::black );
     setCentralWidget( border );
@@ -145,10 +150,6 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     QPalette pal( grp, grp, grp );
 
     mainWin->setPalette( pal );
-
-    // Set up the players
-    player1 = new Player();
-    player2 = new Player();
 
     // Set up top bar
     hb->addSpacing( 10 );
