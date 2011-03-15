@@ -111,11 +111,17 @@ kas_animations [] =
     { 0,                   0,                          0 }
 };
 
-KAsteroidsView::KAsteroidsView( QWidget *parent, const char *name )
+KAsteroidsView::KAsteroidsView(Player *player1, Player *player2,
+                               QWidget *parent, const char *name)
     : QWidget( parent, name ),
       field(0, 0, 640, 440),
       view(&field,this)
 {
+    // Set the players
+    this->player1 = player1;
+    this->player2 = player2;
+
+    // Set up the window
     view.setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     view.setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     view.setCacheMode(QGraphicsView::CacheBackground);
@@ -139,7 +145,8 @@ KAsteroidsView::KAsteroidsView( QWidget *parent, const char *name )
     textSprite->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
     shield = 0;
-    shieldOn = FALSE;
+    player1->shieldOn = FALSE;
+    player2->shieldOn = FALSE;
     refreshRate = REFRESH_DELAY;
 
     initialized = readSprites();
@@ -148,8 +155,11 @@ KAsteroidsView::KAsteroidsView( QWidget *parent, const char *name )
     connect( shieldTimer, SIGNAL(timeout()), this, SLOT(hideShield()) );
     mTimerId = -1;
 
-    shipPower = MAX_POWER_LEVEL;
-    vitalsChanged = TRUE;
+    player1->shipPower = MAX_POWER_LEVEL;
+    player2->shipPower = MAX_POWER_LEVEL;
+
+    player1->vitalsChanged = TRUE;
+    player2->vitalsChanged = TRUE;
     can_destroy_powerups = FALSE;
 
     mPaused = TRUE;
@@ -179,8 +189,11 @@ void KAsteroidsView::reset()
     powerups.clear();
     exhaust.clear();
 
-    shotsFired = 0;
-    shotsHit = 0;
+    player1->shotsFired = 0;
+    player2->shotsFired = 0;
+
+    player1->shotsHit = 0;
+    player2->shotsHit = 0;
 
     rockSpeed = 1.0;
     powerupSpeed = 1.0;
@@ -201,13 +214,17 @@ void KAsteroidsView::reset()
 
 void KAsteroidsView::newGame()
 {
-    if ( !initialized )
-	return;
-    if ( shieldOn )
-    {
+    if(!initialized)
+        return;
+    if(player1->shieldOn) {
       shield->hide();
-      shieldOn = FALSE;
+      player1->shieldOn = FALSE;
     }
+    if(player2->shieldOn) {
+        shield->hide();
+        player2->shieldOn = FALSE;
+    }
+
     reset();
     if ( mTimerId < 0 )
 	mTimerId = startTimer( REFRESH_DELAY );
@@ -236,7 +253,7 @@ void KAsteroidsView::pause( bool p )
 
 // - - -
 
-void KAsteroidsView::newShip()
+void KAsteroidsView::newShip(Player *p)
 {
     if ( !initialized )
 	return;
@@ -247,56 +264,53 @@ void KAsteroidsView::newShip()
     ship->setVelocity( 0.0, 0.0 );
     shipDx = 0;
     shipDy = 0;
-    shipAngle = 0;
-    rotateL = FALSE;
-    rotateR = FALSE;
-    thrustShip = FALSE;
-    shootShip = FALSE;
-    brakeShip = FALSE;
-    teleportShip = FALSE;
-    shieldOn = TRUE;
-    shootDelay = 0;
-    shipPower = MAX_POWER_LEVEL;
-    rotateRate = ROTATE_RATE;
-    rotateSlow = 0;
+    p->shipAngle = 0;
+    p->rotateL = FALSE;
+    p->rotateR = FALSE;
+    p->thrustShip = FALSE;
+    p->shootShip = FALSE;
+    p->brakeShip = FALSE;
+    p->teleportShip = FALSE;
+    p->shieldOn = TRUE;
+    p->shootDelay = 0;
+    p->shipPower = MAX_POWER_LEVEL;
+    p->rotateRate = ROTATE_RATE;
+    p->rotateSlow = 0;
 
-    mBrakeCount = 0;
-    mTeleportCount = 0;
-    mShootCount = 0;
+    p->mBrakeCount = 0;
+    p->mTeleportCount = 0;
+    p->mShootCount = 0;
 
     ship->show();
     shield->show();
-    mShieldCount = 1;   // just in case the ship appears on a rock.
+    p->mShieldCount = 1;   // just in case the ship appears on a rock.
     shieldTimer->start( 1000, TRUE );
 }
 
-void KAsteroidsView::setShield( bool s )
+void KAsteroidsView::setShield(Player *p, bool s)
 {
-    if ( !initialized )
-	return;
-    if ( shieldTimer->isActive() && !s ) {
-	shieldTimer->stop();
-	hideShield();
+    if (!initialized)
+        return;
+    if (shieldTimer->isActive() && !s) {
+        shieldTimer->stop();
+        hideShield(p);
     } else {
-	shieldOn = s && mShieldCount;
+        p->shieldOn = s && p->mShieldCount;
     }
 }
 
-void KAsteroidsView::brake( bool b )
+void KAsteroidsView::brake(Player *p, bool b)
 {
-    if ( !initialized )
-	return;
-    if ( mBrakeCount )
-    {
-	if ( brakeShip && !b )
-	{
-	    rotateL = FALSE;
-	    rotateR = FALSE;
-	    thrustShip = FALSE;
-	    rotateRate = ROTATE_RATE;
-	}
-
-	brakeShip = b;
+    if (!initialized)
+        return;
+    if (p->mBrakeCount) {
+        if (p->brakeShip && !b) {
+            p->rotateL = FALSE;
+            p->rotateR = FALSE;
+            p->thrustShip = FALSE;
+            p->rotateRate = ROTATE_RATE;
+        }
+        p->brakeShip = b;
     }
 }
 
@@ -407,7 +421,7 @@ void KAsteroidsView::resizeEvent(QResizeEvent* event)
 
 // - - -
 
-void KAsteroidsView::timerEvent( QTimerEvent * )
+void KAsteroidsView::timerEvent(Player *p, QTimerEvent *)
 {
     field.advance();
 
@@ -422,7 +436,7 @@ void KAsteroidsView::timerEvent( QTimerEvent * )
     wrapSprite( ship );
 
     // check for missile collision with rocks.
-    processMissiles();
+    processMissiles(player1);
 
     // these are generated when a ship explodes
     for ( KBit *bit = bits.first(); bit; bit = bits.next() )
@@ -443,10 +457,10 @@ void KAsteroidsView::timerEvent( QTimerEvent * )
 
     // move / rotate ship.
     // check for collision with a rock.
-    processShip();
+    processShip(player1);
 
     // move powerups and check for collision with player and missiles
-    processPowerups();
+    processPowerups(player1);
 
     if ( textSprite->isVisible() )
     {
@@ -461,9 +475,9 @@ void KAsteroidsView::timerEvent( QTimerEvent * )
 	    textDy = 0;
     }
 
-    if ( vitalsChanged && !(mFrameNum % 10) ) {
+    if ( p->vitalsChanged && !(mFrameNum % 10) ) {
 	emit updateVitals();
-	vitalsChanged = FALSE;
+    p->vitalsChanged = FALSE;
     }
 
     mFrameNum++;
@@ -576,20 +590,20 @@ void KAsteroidsView::rockHit( AnimatedPixmapItem *hit )
 	emit rocksRemoved();
 }
 
-void KAsteroidsView::reducePower( int val )
+void KAsteroidsView::reducePower(Player *p, int val)
 {
-    shipPower -= val;
-    if ( shipPower <= 0 )
+    p->shipPower -= val;
+    if ( p->shipPower <= 0 )
     {
-	shipPower = 0;
-	thrustShip = FALSE;
-	if ( shieldOn )
+    p->shipPower = 0;
+    p->thrustShip = FALSE;
+    if ( p->shieldOn )
 	{
-	    shieldOn = FALSE;
-	    shield->hide();
+        p->shieldOn = FALSE;
+        shield->hide();
 	}
     }
-    vitalsChanged = TRUE;
+    p->vitalsChanged = TRUE;
 }
 
 void KAsteroidsView::addExhaust( double x, double y, double dx,
@@ -604,7 +618,7 @@ void KAsteroidsView::addExhaust( double x, double y, double dx,
     }
 }
 
-void KAsteroidsView::processMissiles()
+void KAsteroidsView::processMissiles(Player *p)
 {
     KMissile *missile;
 
@@ -632,7 +646,7 @@ void KAsteroidsView::processMissiles()
             if ( (*hit)->type() >= ID_ROCK_LARGE &&
                  (*hit)->type() <= ID_ROCK_SMALL && (*hit)->collidesWithItem(missile) )
             {
-                shotsHit++;
+                p->shotsHit++;
                 rockHit( static_cast<AnimatedPixmapItem *>(*hit) );
                 missiles.removeRef( missile );
                 break;
@@ -643,14 +657,14 @@ void KAsteroidsView::processMissiles()
 
 // - - -
 
-void KAsteroidsView::processShip()
+void KAsteroidsView::processShip(Player *p)
 {
     if ( ship->isVisible() )
     {
-	if ( shieldOn )
+    if ( p->shieldOn )
 	{
 	    shield->show();
-	    reducePower( SHIELD_ON_COST );
+        reducePower(p, SHIELD_ON_COST);
 	    static int sf = 0;
 	    sf++;
 
@@ -680,20 +694,20 @@ void KAsteroidsView::processShip()
 			    factor = 1;
 		    }
 
-		    if ( factor > mShieldCount )
+            if ( factor > p->mShieldCount )
 		    {
 			// shield not strong enough
-			shieldOn = FALSE;
+            p->shieldOn = FALSE;
 			break;
 		    }
 		    rockHit( static_cast<AnimatedPixmapItem *>(*it) );
 		    // the more shields we have the less costly
-		    reducePower( factor * (SHIELD_HIT_COST - mShieldCount*2) );
+            reducePower( p, factor * (SHIELD_HIT_COST - p->mShieldCount*2) );
 		}
 	    }
 	}
 
-	if ( !shieldOn )
+    if ( !p->shieldOn )
 	{
 	    shield->hide();
 	    QList<QGraphicsItem *> hits = ship->collidingItems(Qt::IntersectsItemBoundingRect);
@@ -724,39 +738,39 @@ void KAsteroidsView::processShip()
 	}
 
 
-	if ( rotateSlow )
-	    rotateSlow--;
+    if ( p->rotateSlow )
+        p->rotateSlow--;
 
-	if ( rotateL )
+    if ( p->rotateL )
 	{
-	    shipAngle -= rotateSlow ? 1 : rotateRate;
-	    if ( shipAngle < 0 )
-		shipAngle += SHIP_STEPS;
+        p->shipAngle -= p->rotateSlow ? 1 : p->rotateRate;
+        if ( p->shipAngle < 0 )
+        p->shipAngle += SHIP_STEPS;
 	}
 
-	if ( rotateR )
+    if ( p->rotateR )
 	{
-	    shipAngle += rotateSlow ? 1 : rotateRate;
-	    if ( shipAngle >= SHIP_STEPS )
-		shipAngle -= SHIP_STEPS;
+        p->shipAngle += p->rotateSlow ? 1 : p->rotateRate;
+        if ( p->shipAngle >= SHIP_STEPS )
+        p->shipAngle -= SHIP_STEPS;
 	}
 
-	double angle = shipAngle * PI_X_2 / SHIP_STEPS;
+    double angle = p->shipAngle * PI_X_2 / SHIP_STEPS;
 	double cosangle = cos( angle );
 	double sinangle = sin( angle );
 
-	if ( brakeShip )
+    if ( p->brakeShip )
 	{
-	    thrustShip = FALSE;
-	    rotateL = FALSE;
-	    rotateR = FALSE;
-	    rotateRate = ROTATE_RATE;
+        p->thrustShip = FALSE;
+        p->rotateL = FALSE;
+        p->rotateR = FALSE;
+        p->rotateRate = ROTATE_RATE;
 	    if ( fabs(shipDx) < 2.5 && fabs(shipDy) < 2.5 )
 	    {
 		shipDx = 0.0;
 		shipDy = 0.0;
 		ship->setVelocity( shipDx, shipDy );
-		brakeShip = FALSE;
+        p->brakeShip = FALSE;
 	    }
 	    else
 	    {
@@ -772,35 +786,35 @@ void KAsteroidsView::processShip()
 		if ( fdiff > 0.08 )
 		{
 		    if ( angleDiff > 0 )
-			rotateL = TRUE;
+            p->rotateL = TRUE;
 		    else if ( angleDiff < 0 )
-			rotateR = TRUE;
+            p->rotateR = TRUE;
 		    if ( fdiff > 0.6 )
-			rotateRate = mBrakeCount + 1;
+            p->rotateRate = p->mBrakeCount + 1;
 		    else if ( fdiff > 0.4 )
-			rotateRate = 2;
+            p->rotateRate = 2;
 		    else
-			rotateRate = 1;
+            p->rotateRate = 1;
 
-		    if ( rotateRate > 5 )
-			rotateRate = 5;
+            if ( p->rotateRate > 5 )
+            p->rotateRate = 5;
 		}
 		else if ( fabs(shipDx) > 1 || fabs(shipDy) > 1 )
 		{
-		    thrustShip = TRUE;
+            p->thrustShip = TRUE;
 		    // we'll make braking a bit faster
-		    shipDx += cosangle/6 * (mBrakeCount - 1);
-		    shipDy += sinangle/6 * (mBrakeCount - 1);
-		    reducePower( BRAKE_ON_COST );
+            shipDx += cosangle/6 * (p->mBrakeCount - 1);
+            shipDy += sinangle/6 * (p->mBrakeCount - 1);
+            reducePower( p, BRAKE_ON_COST );
 		    addExhaust( ship->x() + 20 - cosangle*22,
 				ship->y() + 20 - sinangle*22,
 				shipDx-cosangle, shipDy-sinangle,
-				mBrakeCount+1 );
+                p->mBrakeCount+1 );
 		}
 	    }
 	}
 
-	if ( thrustShip )
+    if ( p->thrustShip )
 	{
 	    // The ship has a terminal velocity, but trying to go faster
 	    // still uses fuel (can go faster diagonally - don't care).
@@ -811,17 +825,17 @@ void KAsteroidsView::processShip()
 	    if ( fabs(shipDy + thrusty) < MAX_SHIP_SPEED )
 		shipDy += thrusty;
 	    ship->setVelocity( shipDx, shipDy );
-	    reducePower( 1 );
+        reducePower( p, 1 );
 	    addExhaust( ship->x() + 20 - cosangle*20,
 			ship->y() + 20 - sinangle*20,
 			shipDx-cosangle, shipDy-sinangle, 3 );
 	}
 
-	ship->setFrame( shipAngle >> 1 );
+    ship->setFrame( p->shipAngle >> 1 );
 
-	if ( shootShip )
+    if ( p->shootShip )
 	{
-        if ( !shootDelay && (int)missiles.count() < mShootCount + 4 )
+        if ( !p->shootDelay && (int)missiles.count() < p->mShootCount + 4 )
 	    {
 	      KMissile *missile = new KMissile( animation[ID_MISSILE], &field );
 	      missile->setPos( 21+ship->x()+cosangle*21,
@@ -830,17 +844,17 @@ void KAsteroidsView::processShip()
 	      missile->setVelocity( shipDx + cosangle*MISSILE_SPEED,
 				    shipDy + sinangle*MISSILE_SPEED );
 	      missiles.append( missile );
-	      shotsFired++;
-	      reducePower( 1 );
+          p->shotsFired++;
+          reducePower( p, 1 );
 
-	      shootDelay = 5;
+          p->shootDelay = 5;
 	    }
 
-	    if ( shootDelay )
-	      shootDelay--;
+        if ( p->shootDelay )
+          p->shootDelay--;
 	}
 
-	if ( teleportShip )
+    if ( p->teleportShip )
 	{
 	    int ra = qrand() % 10;
 	    if( ra == 0 )
@@ -850,13 +864,13 @@ void KAsteroidsView::processShip()
 	    ship->setPos( xra, yra );
 	}
 
-	vitalsChanged = TRUE;
+    p->vitalsChanged = TRUE;
     }
 }
 
 // - - -
 
-void KAsteroidsView::processPowerups()
+void KAsteroidsView::processPowerups(Player *p)
 {
     if ( !powerups.isEmpty() )
     {
@@ -889,29 +903,29 @@ void KAsteroidsView::processPowerups()
 		    switch( pup->type() )
 		    {
 		      case ID_ENERGY_POWERUP:
-			shipPower += 150;
-			if ( shipPower > MAX_POWER_LEVEL )
-			    shipPower = MAX_POWER_LEVEL;
+            p->shipPower += 150;
+            if ( p->shipPower > MAX_POWER_LEVEL )
+                p->shipPower = MAX_POWER_LEVEL;
 			break;
 		      case ID_TELEPORT_POWERUP:
-			mTeleportCount++;
+            p->mTeleportCount++;
 			break;
 		      case ID_BRAKE_POWERUP:
-			if ( mBrakeCount < MAX_BRAKES )
-			    mBrakeCount++;
+            if ( p->mBrakeCount < MAX_BRAKES )
+                p->mBrakeCount++;
 			break;
 		      case ID_SHIELD_POWERUP:
-			if ( mShieldCount < MAX_SHIELDS )
-			    mShieldCount++;
+            if ( p->mShieldCount < MAX_SHIELDS )
+                p->mShieldCount++;
 			break;
 		      case ID_SHOOT_POWERUP:
-			if ( mShootCount < MAX_FIREPOWER )
-			    mShootCount++;
+            if ( p->mShootCount < MAX_FIREPOWER )
+                p->mShootCount++;
 			break;
 		    }
 
 		    powerups.removeRef( pup );
-		    vitalsChanged = TRUE;
+            p->vitalsChanged = TRUE;
 		}
 		else if ( (*it) == shield )
 		{
@@ -931,11 +945,11 @@ void KAsteroidsView::processPowerups()
 
 // - - -
 
-void KAsteroidsView::hideShield()
+void KAsteroidsView::hideShield(Player *p)
 {
     shield->hide();
-    mShieldCount = 0;
-    shieldOn = FALSE;
+    p->mShieldCount = 0;
+    p->shieldOn = FALSE;
 }
 
 double KAsteroidsView::randDouble()
