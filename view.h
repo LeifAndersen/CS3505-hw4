@@ -60,13 +60,15 @@
 #include <QResizeEvent>
 #include "sprites.h"
 
+#include "player.h"
+
 #define MAX_POWER_LEVEL          1000
 
 class KAsteroidsView : public QWidget
 {
     Q_OBJECT
 public:
-    KAsteroidsView( QWidget *parent = 0, const char *name = 0 );
+    KAsteroidsView(Player *player1, Player *player2, QWidget *parent = 0, const char *name = 0);
     virtual ~KAsteroidsView();
 
     int refreshRate;
@@ -76,28 +78,28 @@ public:
     void addRocks( int num );
     void newGame();
     void endGame();
-    void newShip();
+    void newShip(Player *p);
 
-    void rotateLeft( bool r ) { rotateL = r; rotateSlow = 5; }
-    void rotateRight( bool r ) { rotateR = r; rotateSlow = 5; }
-    void thrust( bool t ) { thrustShip = t && shipPower > 0; }
-    void shoot( bool s ) { shootShip = s; shootDelay = 0; }
-    void setShield( bool s );
-    void teleport( bool te) { teleportShip = te && mTeleportCount; }
-    void brake( bool b );
+    void rotateLeft( Player *p, bool r ) { p->rotateL = r; p->rotateSlow = 5; }
+    void rotateRight( Player *p, bool r ) { p->rotateR = r; p->rotateSlow = 5; }
+    void thrust( Player *p, bool t ) { p->thrustShip = t && p->shipPower > 0; }
+    void shoot( Player *p, bool s ) { p->shootShip = s; p->shootDelay = 0; }
+    void setShield( Player *p, bool s );
+    void teleport( Player *p, bool te) { p->teleportShip = te && p->mTeleportCount; }
+    void brake( Player *p, bool b );
     void pause( bool p);
 
     void showText( const QString &text, const QColor &color, bool scroll=TRUE );
     void hideText();
 
-    int shots() const { return shotsFired; }
-    int hits() const { return shotsHit; }
-    int power() const { return shipPower; }
+    int shots( Player *p ) const { return p->shotsFired; }
+    int hits( Player *p ) const { return p->shotsHit; }
+    int power( Player *p ) const { return p->shipPower; }
 
-    int teleportCount() const { return mTeleportCount; }
-    int brakeCount() const { return mBrakeCount; }
-    int shieldCount() const { return mShieldCount; }
-    int shootCount() const { return mShootCount; }
+    int teleportCount( Player *p ) const { return p->mTeleportCount; }
+    int brakeCount( Player *p ) const { return p->mBrakeCount; }
+    int shieldCount( Player *p ) const { return p->mShieldCount; }
+    int shootCount( Player *p ) const { return p->mShootCount; }
 
 signals:
     void shipKilled();
@@ -106,23 +108,23 @@ signals:
     void updateVitals();
 
 private slots:
-    void hideShield();
+    void hideShield(Player *p);
 
 protected:
     bool readSprites();
     void wrapSprite( QGraphicsItem * );
     void rockHit( AnimatedPixmapItem * );
-    void reducePower( int val );
+    void reducePower(Player *p, int val);
     void addExhaust( double x, double y, double dx, double dy, int count );
-    void processMissiles();
-    void processShip();
-    void processPowerups();
+    void processMissiles(Player *p);
+    void processShip(Player *p);
+    void processPowerups(Player *p);
     void processShield();
     double randDouble();
     int randInt( int range );
 
     virtual void resizeEvent( QResizeEvent *event );
-    virtual void timerEvent( QTimerEvent * );
+    virtual void timerEvent(Player *p, QTimerEvent *);
 
     void showEvent( QShowEvent * );
 
@@ -139,31 +141,6 @@ private:
     AnimatedPixmapItem *ship;
     QGraphicsTextItem *textSprite;
 
-    bool rotateL;
-    bool rotateR;
-    bool thrustShip;
-    bool shootShip;
-    bool teleportShip;
-    bool brakeShip;
-    bool pauseShip;
-    bool shieldOn;
-
-    bool vitalsChanged;
-
-    int  shipAngle;
-    int  rotateSlow;
-    int  rotateRate;
-    int  shipPower;
-
-    int shotsFired;
-    int shotsHit;
-    int shootDelay;
-
-    int mBrakeCount;
-    int mShieldCount;
-    int mTeleportCount;
-    int mShootCount;
-
     double shipDx;
     double shipDy;
 
@@ -179,6 +156,9 @@ private:
 
     QTimer *shieldTimer;
     bool initialized;
+
+    Player *player1;
+    Player *player2;
 };
 
 #endif

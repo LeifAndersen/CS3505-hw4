@@ -114,6 +114,11 @@ const char *soundDefaults[] =
 KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     : Q3MainWindow( parent, name, 0 )
 {
+
+    // Set up the players
+    player1 = new Player();
+    player2 = new Player();
+
     QWidget *border = new QWidget( this );
     border->setBackgroundColor( Qt::black );
     setCentralWidget( border );
@@ -127,7 +132,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
 
     borderLayout->addStretch( 1 );
 
-    view = new KAsteroidsView( mainWin );
+    view = new KAsteroidsView(player1, player2, mainWin);
     view->setFocusPolicy( Qt::StrongFocus );
     connect( view, SIGNAL( shipKilled() ), SLOT( slotShipKilled() ) );
     connect( view, SIGNAL( rockHit(int) ), SLOT( slotRockHit(int) ) );
@@ -145,10 +150,6 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     QPalette pal( grp, grp, grp );
 
     mainWin->setPalette( pal );
-
-    // Set up the players
-    player1 = new Player();
-    player2 = new Player();
 
     // Set up top bar
     hb->addSpacing( 10 );
@@ -406,16 +407,30 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     player2->shipsRemain = 3;
     showHiscores = FALSE;
 
-    actions.insert( Qt::Key_Up, Thrust );
-    actions.insert( Qt::Key_Left, RotateLeft );
-    actions.insert( Qt::Key_Right, RotateRight );
-    actions.insert( Qt::Key_Space, Shoot );
-    actions.insert( Qt::Key_Z, Teleport );
-    actions.insert( Qt::Key_X, Brake );
-    actions.insert( Qt::Key_S, Shield );
-    actions.insert( Qt::Key_P, Pause );
-    actions.insert( Qt::Key_L, Launch );
-    actions.insert( Qt::Key_N, NewGame );
+
+    // Player 1 keys
+    player1->actions.insert( Qt::Key_Up, Thrust );
+    player1->actions.insert( Qt::Key_Left, RotateLeft );
+    player1->actions.insert( Qt::Key_Right, RotateRight );
+    player1->actions.insert( Qt::Key_Space, Shoot );
+    player1->actions.insert( Qt::Key_Z, Teleport );
+    player1->actions.insert( Qt::Key_X, Brake );
+    player1->actions.insert( Qt::Key_S, Shield );
+    player1->actions.insert( Qt::Key_P, Pause );
+    player1->actions.insert( Qt::Key_L, Launch );
+    player1->actions.insert( Qt::Key_N, NewGame );
+
+    // Player 2 Keys
+    player2->actions.insert( Qt::Key_8, Thrust );
+    player2->actions.insert( Qt::Key_4, RotateLeft );
+    player2->actions.insert( Qt::Key_6, RotateRight );
+    player2->actions.insert( Qt::Key_Enter, Shoot );
+    player2->actions.insert( Qt::Key_5, Teleport );
+    player2->actions.insert( Qt::Key_0, Brake );
+    player2->actions.insert( Qt::Key_Plus, Shield );
+    player2->actions.insert( Qt::Key_division, Pause );
+    player2->actions.insert( Qt::Key_7, Launch );
+    player2->actions.insert( Qt::Key_M, NewGame );
 
     view->showText( tr( "N - 1 Player ---- M - 2 Players" ), Qt::yellow );
 }
@@ -430,109 +445,210 @@ void KAstTopLevel::playSound( const char * )
 
 void KAstTopLevel::keyPressEvent( QKeyEvent *event )
 {
-    if ( event->isAutoRepeat() || !actions.contains( event->key() ) )
-    {
+    if (event->isAutoRepeat()
+        || !player1->actions.contains(event->key())
+        || !player2->actions.contains(event->key())) {
         event->ignore();
         return;
     }
 
-    Action a = actions[ event->key() ];
+    Action a = player1->actions[ event->key() ];
+
+    switch (a)
+    {
+    case RotateLeft:
+        view->rotateLeft(player1, TRUE);
+        break;
+
+    case RotateRight:
+        view->rotateRight(player1, TRUE);
+        break;
+
+    case Thrust:
+        view->thrust(player1, TRUE);
+        break;
+
+    case Shoot:
+        view->shoot(player1, TRUE);
+        break;
+
+    case Shield:
+        view->setShield(player1, TRUE);
+        break;
+
+    case Teleport:
+        view->teleport(player1, TRUE);
+        break;
+
+    case Brake:
+        view->brake(player1, TRUE);
+        break;
+
+    default:
+        break;
+    }
+
+    a = player2->actions[ event->key() ];
 
     switch ( a )
     {
-        case RotateLeft:
-            view->rotateLeft( TRUE );
-            break;
+    case RotateLeft:
+        view->rotateLeft(player2, TRUE);
+        break;
 
-        case RotateRight:
-            view->rotateRight( TRUE );
-            break;
+    case RotateRight:
+        view->rotateRight(player2, TRUE);
+        break;
 
-        case Thrust:
-            view->thrust( TRUE );
-            break;
+    case Thrust:
+        view->thrust(player2, TRUE);
+        break;
 
-        case Shoot:
-            view->shoot( TRUE );
-            break;
+    case Shoot:
+        view->shoot(player2, TRUE);
+        break;
 
-        case Shield:
-            view->setShield( TRUE );
-            break;
+    case Shield:
+        view->setShield(player2, TRUE);
+        break;
 
-        case Teleport:
-            view->teleport( TRUE );
-            break;
+    case Teleport:
+        view->teleport(player2, TRUE);
+        break;
 
-        case Brake:
-            view->brake( TRUE );
-            break;
+    case Brake:
+        view->brake(player2, TRUE);
+        break;
 
-        default:
-            event->ignore();
-            return;
+    default:
+        break;
     }
+
     event->accept();
 }
 
 void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
 {
-    if ( event->isAutoRepeat() || !actions.contains( event->key() ) )
-    {
+    if (event->isAutoRepeat()
+        || !player1->actions.contains(event->key())
+        || !player2->actions.contains(event->key())) {
         event->ignore();
         return;
     }
 
-    Action a = actions[ event->key() ];
+    Action a = player1->actions[event->key()];
 
-    switch ( a )
+    switch (a)
     {
-        case RotateLeft:
-            view->rotateLeft( FALSE );
-            break;
+    case RotateLeft:
+        view->rotateLeft(player1, FALSE);
+        break;
 
-        case RotateRight:
-            view->rotateRight( FALSE );
-            break;
+    case RotateRight:
+        view->rotateRight(player1, FALSE);
+        break;
 
-        case Thrust:
-            view->thrust( FALSE );
-            break;
+    case Thrust:
+        view->thrust(player1, FALSE);
+        break;
 
-        case Shoot:
-            view->shoot( FALSE );
-            break;
+    case Shoot:
+        view->shoot(player1, FALSE);
+        break;
 
-        case Brake:
-            view->brake( FALSE );
-            break;
+    case Brake:
+        view->brake(player1, FALSE);
+        break;
 
-        case Shield:
-            view->setShield( FALSE );
-            break;
+    case Shield:
+        view->setShield(player1, FALSE);
+        break;
 
-        case Teleport:
-            view->teleport( FALSE );
-            break;
+    case Teleport:
+        view->teleport(player1, FALSE);
+        break;
 
-        case Launch:
-            if ( waitShip )
-            {
-                view->newShip();
-                waitShip = FALSE;
-                view->hideText();
-            }
-            else
-            {
-                event->ignore();
-                return;
-            }
-            break;
+    case Launch:
+        if (player1->waitShip)
+        {
+            view->newShip(player1);
+            player1->waitShip = FALSE;
+            view->hideText();
+        }
+        else
+        {
+            event->ignore();
+            return;
+        }
+        break;
 
 	case NewGame:
 	    slotNewGame();
 	    break;
-/*
+        /*
+        case Pause:
+            {
+                view->pause( TRUE );
+                QMessageBox::information( this,
+                                          tr("KAsteroids is paused"),
+                                          tr("Paused") );
+                view->pause( FALSE );
+            }
+            break; */
+    default:
+        break;
+    }
+
+    a = player2->actions[event->key()];
+
+    switch (a)
+    {
+    case RotateLeft:
+        view->rotateLeft(player2, FALSE);
+        break;
+
+    case RotateRight:
+        view->rotateRight(player2, FALSE);
+        break;
+
+    case Thrust:
+        view->thrust(player2, FALSE);
+        break;
+
+    case Shoot:
+        view->shoot(player2, FALSE);
+        break;
+
+    case Brake:
+        view->brake(player2, FALSE);
+        break;
+
+    case Shield:
+        view->setShield(player2, FALSE);
+        break;
+
+    case Teleport:
+        view->teleport(player2, FALSE);
+        break;
+
+    case Launch:
+        if (player2->waitShip)
+        {
+            view->newShip(player2);
+            player2->waitShip = FALSE;
+            view->hideText();
+        }
+        else
+        {
+            event->ignore();
+            return;
+        }
+        break;
+
+    case NewGame:
+        slotNewGame();
+        break;
+        /*
         case Pause:
             {
                 view->pause( TRUE );
@@ -543,9 +659,8 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
             }
             break;
 */
-        default:
-            event->ignore();
-            return;
+    default:
+        break;
     }
 
     event->accept();
@@ -579,8 +694,9 @@ void KAstTopLevel::slotNewGame()
     view->setRockSpeed( levels[0].rockSpeed );
     view->addRocks( levels[0].nrocks );
 //    view->showText( tr( "Press L to launch." ), yellow );
-    view->newShip();
-    waitShip = FALSE;
+    view->newShip(player1);
+    player1->waitShip = FALSE;
+    player2->waitShip = FALSE;
     view->hideText();
     isPaused = FALSE;
 }
@@ -594,12 +710,12 @@ void KAstTopLevel::slotShipKilled()
 
     if ( player1->shipsRemain )
     {
-        waitShip = TRUE;
-        view->showText( tr( "Ship Destroyed. Press L to launch."), Qt::yellow );
+        player1->waitShip = TRUE;
+        view->showText( tr( "P1:Ship Destroyed. Press L to launch."), Qt::yellow );
     }
     else
     {
-        view->showText( tr("Game Over!"), Qt::red );
+        view->showText( tr("P1:Game Over!"), Qt::red );
         view->endGame();
     doStats();
 //        highscore->addEntry( score, level, showHiscores );
@@ -644,8 +760,8 @@ void KAstTopLevel::slotRocksRemoved()
 void KAstTopLevel::doStats()
 {
     QString r( "0.00" );
-    if ( view->shots() )
-     r = QString::number( (double)view->hits() / view->shots() * 100.0,
+    if ( view->shots(player1) )
+     r = QString::number( (double)view->hits(player1) / view->shots(player1) * 100.0,
                  'g', 2 );
 
 /* multi-line text broken in Qt 3
@@ -660,9 +776,15 @@ void KAstTopLevel::doStats()
 
 void KAstTopLevel::slotUpdateVitals()
 {
-    player1->brakesLCD->display( view->brakeCount() );
-    player1->shieldLCD->display( view->shieldCount() );
-    player1->shootLCD->display( view->shootCount() );
-//    teleportsLCD->display( view->teleportCount() );
-    player1->powerMeter->setValue( view->power() );
+    // Player 1
+    player1->brakesLCD->display(view->brakeCount(player1) );
+    player1->shieldLCD->display(view->shieldCount(player1) );
+    player1->shootLCD->display(view->shootCount(player1) );
+    player1->powerMeter->setValue(view->power(player1) );
+
+    // Player 2
+    player2->brakesLCD->display(view->brakeCount(player2));
+    player2->shieldLCD->display(view->shieldCount(player2));
+    player2->shootLCD->display(view->shootCount(player2));
+    player2->powerMeter->setValue(view->power(player2));
 }

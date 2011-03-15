@@ -100,17 +100,11 @@ private:
     Q3Dict<QString> soundDict;
 
     // waiting for user to press Enter to launch a ship
-    bool waitShip;
     bool isPaused;
     Player *player1;
     Player *player2;
     int level;
     bool showHiscores;
-
-    enum Action { Launch, Thrust, RotateLeft, RotateRight, Shoot, Teleport,
-                    Brake, Shield, Pause, NewGame  };
-
-    QMap<int,Action> actions;
 };
 
 #endif
