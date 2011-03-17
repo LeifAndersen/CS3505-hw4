@@ -446,8 +446,8 @@ void KAstTopLevel::playSound( const char * )
 void KAstTopLevel::keyPressEvent( QKeyEvent *event )
 {
     if (event->isAutoRepeat()
-        || !player1->actions.contains(event->key())
-        || !player2->actions.contains(event->key())) {
+        || ( !player1->actions.contains(event->key())
+        && !player2->actions.contains(event->key()))) {
         event->ignore();
         return;
     }
@@ -530,8 +530,8 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
 void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
 {
     if (event->isAutoRepeat()
-        || !player1->actions.contains(event->key())
-        || !player2->actions.contains(event->key())) {
+        || (!player1->actions.contains(event->key())
+        && !player2->actions.contains(event->key()))) {
         event->ignore();
         return;
     }

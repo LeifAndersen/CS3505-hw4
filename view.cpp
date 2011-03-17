@@ -293,7 +293,7 @@ void KAsteroidsView::setShield(Player *p, bool s)
         return;
     if (shieldTimer->isActive() && !s) {
         shieldTimer->stop();
-        hideShield(p);
+        hideShield();
     } else {
         p->shieldOn = s && p->mShieldCount;
     }
@@ -945,11 +945,13 @@ void KAsteroidsView::processPowerups(Player *p)
 
 // - - -
 
-void KAsteroidsView::hideShield(Player *p)
+void KAsteroidsView::hideShield()
 {
     shield->hide();
-    p->mShieldCount = 0;
-    p->shieldOn = FALSE;
+    player1->mShieldCount = 0;
+    player1->shieldOn = FALSE;
+    player2->mShieldCount = 0;
+    player2->shieldOn = FALSE;
 }
 
 double KAsteroidsView::randDouble()
