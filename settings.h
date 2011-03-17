@@ -2,6 +2,9 @@
 #define SETTINGS_H
 
 #include <QDialog>
+#include <qnamespace.h>
+#include <Qstring>
+#include <vector>
 
 namespace Ui {
     class Settings;
@@ -11,19 +14,19 @@ namespace Ui {
 struct KeySettings
 {
 public:
-    char player1_thrust;
-    char player1_left;
-    char player1_right;
-    char player1_shoot;
-    char player1_shield;
-    char player1_brake;
+    Qt::Key player1_thrust;
+    Qt::Key player1_left;
+    Qt::Key player1_right;
+    Qt::Key player1_shoot;
+    Qt::Key player1_shield;
+    Qt::Key player1_brake;
 
-    char player2_thrust;
-    char player2_left;
-    char player2_right;
-    char player2_shoot;
-    char player2_shield;
-    char player2_brake;
+    Qt::Key player2_thrust;
+    Qt::Key player2_left;
+    Qt::Key player2_right;
+    Qt::Key player2_shoot;
+    Qt::Key player2_shield;
+    Qt::Key player2_brake;
 };
 
 class Settings : public QDialog
@@ -35,7 +38,13 @@ public:
     ~Settings();
 
 private:
+    int activebox;
+    std::vector<QPushButton*> buttons;
+    KeySettings editedSettings;
     Ui::Settings *ui;
+    static QString keyString(Qt::Key); // returns a string representitive of what key is pressed
+
+    void setP1_thrust();
 
 protected:
 };

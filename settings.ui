@@ -46,7 +46,7 @@
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>60</y>
+     <y>50</y>
      <width>31</width>
      <height>16</height>
     </rect>
@@ -55,23 +55,10 @@
     <string>Thrust</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="Player1_thrust">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>80</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
   <widget class="QLabel" name="Player1b">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>30</x>
      <y>90</y>
      <width>21</width>
      <height>16</height>
@@ -97,7 +84,7 @@
   <widget class="QLabel" name="Player1c">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>110</x>
      <y>90</y>
      <width>31</width>
      <height>16</height>
@@ -131,97 +118,6 @@
    </property>
    <property name="text">
     <string>Brake</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Player1_left">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>100</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Player1_right">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>100</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Player1_shoot">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>140</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Player1_shield">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>170</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Player1_break">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>200</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Player2_thust">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>80</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Player2_shield">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>170</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
    </property>
   </widget>
   <widget class="QLabel" name="Player2Title">
@@ -276,24 +172,11 @@
     <string>Right</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="Player2_brake">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>200</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
   <widget class="QLabel" name="Player2a">
    <property name="geometry">
     <rect>
      <x>250</x>
-     <y>60</y>
+     <y>50</y>
      <width>31</width>
      <height>16</height>
     </rect>
@@ -315,19 +198,6 @@
     <string>Brake</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="Playe2_Shoot">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>140</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
   <widget class="QLabel" name="Player2d">
    <property name="geometry">
     <rect>
@@ -341,32 +211,6 @@
     <string>Shoot</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="Player2_left">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>100</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Player2_right">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>100</y>
-     <width>21</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
-   </property>
-  </widget>
   <widget class="Line" name="line">
    <property name="geometry">
     <rect>
@@ -378,6 +222,162 @@
    </property>
    <property name="orientation">
     <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player1_thrust">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>70</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player1_left">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player1_right">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>110</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player1_shoot">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>140</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player1_shield">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>170</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player1_brake">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>200</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player2_thrust">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>70</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player2_left">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>110</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player2_right">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>110</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player2_shoot">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>140</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player2_shield">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>170</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Player2_brake">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>200</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
    </property>
   </widget>
  </widget>
