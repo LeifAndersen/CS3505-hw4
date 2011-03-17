@@ -421,7 +421,7 @@ void KAsteroidsView::resizeEvent(QResizeEvent* event)
 
 // - - -
 
-void KAsteroidsView::timerEvent(Player *p, QTimerEvent *)
+void KAsteroidsView::timerEvent(QTimerEvent *)
 {
     field.advance();
 
@@ -475,9 +475,9 @@ void KAsteroidsView::timerEvent(Player *p, QTimerEvent *)
 	    textDy = 0;
     }
 
-    if ( p->vitalsChanged && !(mFrameNum % 10) ) {
+    if ( player1->vitalsChanged && !(mFrameNum % 10) ) {
 	emit updateVitals();
-    p->vitalsChanged = FALSE;
+    player1->vitalsChanged = FALSE;
     }
 
     mFrameNum++;

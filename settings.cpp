@@ -1,4 +1,4 @@
-#include <Qstring>
+#include <QString>
 
 #include "settings.h"
 #include "ui_settings.h"

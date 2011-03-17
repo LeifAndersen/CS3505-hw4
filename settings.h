@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <qnamespace.h>
-#include <Qstring>
+#include <QString>
 #include <vector>
 
 namespace Ui {

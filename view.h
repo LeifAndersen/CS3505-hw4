@@ -124,7 +124,7 @@ protected:
     int randInt( int range );
 
     virtual void resizeEvent( QResizeEvent *event );
-    virtual void timerEvent(Player *p, QTimerEvent *);
+    virtual void timerEvent(QTimerEvent *);
 
     void showEvent( QShowEvent * );
 
