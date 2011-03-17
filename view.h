@@ -108,7 +108,7 @@ signals:
     void updateVitals();
 
 private slots:
-    void hideShield(Player *p);
+    void hideShield();
 
 protected:
     bool readSprites();
