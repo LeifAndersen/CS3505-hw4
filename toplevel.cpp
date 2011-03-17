@@ -445,14 +445,56 @@ void KAstTopLevel::playSound( const char * )
 
 void KAstTopLevel::keyPressEvent( QKeyEvent *event )
 {
-    if (event->isAutoRepeat()
-        || ( !player1->actions.contains(event->key())
-        && !player2->actions.contains(event->key()))) {
-        event->ignore();
+    Action a;
+
+    if (event->isAutoRepeat() || !player1->actions.contains(event->key())) {
+        if (event->isAutoRepeat() || !player2->actions.contains(event->key())) {
+            event->ignore();
+            return;
+        }
+
+        a = player2->actions[ event->key() ];
+
+        switch ( a )
+        {
+        case RotateLeft:
+            view->rotateLeft(player2, TRUE);
+            break;
+
+        case RotateRight:
+            view->rotateRight(player2, TRUE);
+            break;
+
+        case Thrust:
+            view->thrust(player2, TRUE);
+            break;
+
+        case Shoot:
+            view->shoot(player2, TRUE);
+            break;
+
+        case Shield:
+            view->setShield(player2, TRUE);
+            break;
+
+        case Teleport:
+            view->teleport(player2, TRUE);
+            break;
+
+        case Brake:
+            view->brake(player2, TRUE);
+            break;
+
+        default:
+            event->ignore();
+            return;
+        }
+
+        event->accept();
         return;
     }
 
-    Action a = player1->actions[ event->key() ];
+    a = player1->actions[ event->key() ];
 
     switch (a)
     {
@@ -485,58 +527,94 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
         break;
 
     default:
-        break;
-    }
-
-    a = player2->actions[ event->key() ];
-
-    switch ( a )
-    {
-    case RotateLeft:
-        view->rotateLeft(player2, TRUE);
-        break;
-
-    case RotateRight:
-        view->rotateRight(player2, TRUE);
-        break;
-
-    case Thrust:
-        view->thrust(player2, TRUE);
-        break;
-
-    case Shoot:
-        view->shoot(player2, TRUE);
-        break;
-
-    case Shield:
-        view->setShield(player2, TRUE);
-        break;
-
-    case Teleport:
-        view->teleport(player2, TRUE);
-        break;
-
-    case Brake:
-        view->brake(player2, TRUE);
-        break;
-
-    default:
+        event->ignore();
         break;
     }
 
     event->accept();
+
 }
 
 void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
 {
-    if (event->isAutoRepeat()
-        || (!player1->actions.contains(event->key())
-        && !player2->actions.contains(event->key()))) {
-        event->ignore();
+    Action a;
+
+    if (event->isAutoRepeat() || !player1->actions.contains(event->key())) {
+        if (event->isAutoRepeat() || !player2->actions.contains(event->key())) {
+            event->ignore();
+            return;
+        }
+
+        a = player2->actions[event->key()];
+
+        switch (a)
+        {
+        case RotateLeft:
+            view->rotateLeft(player2, FALSE);
+            break;
+
+        case RotateRight:
+            view->rotateRight(player2, FALSE);
+            break;
+
+        case Thrust:
+            view->thrust(player2, FALSE);
+            break;
+
+        case Shoot:
+            view->shoot(player2, FALSE);
+            break;
+
+        case Brake:
+            view->brake(player2, FALSE);
+            break;
+
+        case Shield:
+            view->setShield(player2, FALSE);
+            break;
+
+        case Teleport:
+            view->teleport(player2, FALSE);
+            break;
+
+        case Launch:
+            if (player2->waitShip)
+            {
+                view->newShip(player2);
+                player2->waitShip = FALSE;
+                view->hideText();
+            }
+            else
+            {
+                event->ignore();
+                return;
+            }
+            break;
+
+        case NewGame:
+            slotNewGame();
+            break;
+            /*
+            case Pause:
+                {
+                    view->pause( TRUE );
+                    QMessageBox::information( this,
+                                              tr("KAsteroids is paused"),
+                                              tr("Paused") );
+                    view->pause( FALSE );
+                }
+                break;
+    */
+        default:
+            event->ignore();
+            return;
+        }
+
+        event->accept();
         return;
     }
 
-    Action a = player1->actions[event->key()];
+    a = player1->actions[event->key()];
 
     switch (a)
     {
@@ -596,71 +674,8 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
             }
             break; */
     default:
-        break;
-    }
-
-    a = player2->actions[event->key()];
-
-    switch (a)
-    {
-    case RotateLeft:
-        view->rotateLeft(player2, FALSE);
-        break;
-
-    case RotateRight:
-        view->rotateRight(player2, FALSE);
-        break;
-
-    case Thrust:
-        view->thrust(player2, FALSE);
-        break;
-
-    case Shoot:
-        view->shoot(player2, FALSE);
-        break;
-
-    case Brake:
-        view->brake(player2, FALSE);
-        break;
-
-    case Shield:
-        view->setShield(player2, FALSE);
-        break;
-
-    case Teleport:
-        view->teleport(player2, FALSE);
-        break;
-
-    case Launch:
-        if (player2->waitShip)
-        {
-            view->newShip(player2);
-            player2->waitShip = FALSE;
-            view->hideText();
-        }
-        else
-        {
-            event->ignore();
-            return;
-        }
-        break;
-
-    case NewGame:
-        slotNewGame();
-        break;
-        /*
-        case Pause:
-            {
-                view->pause( TRUE );
-                QMessageBox::information( this,
-                                          tr("KAsteroids is paused"),
-                                          tr("Paused") );
-                view->pause( FALSE );
-            }
-            break;
-*/
-    default:
-        break;
+        event->ignore();
+        return;
     }
 
     event->accept();
