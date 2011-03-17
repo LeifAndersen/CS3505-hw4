@@ -107,6 +107,19 @@ QString Settings::keyString(int value)
     case Qt::Key_PageDown:
         return "PgDown";
         break;
+
+    case Qt::Key_Left:
+        return "Left Arrow";
+        break;
+    case Qt::Key_Right:
+        return "Right Arrow";
+        break;
+    case Qt::Key_Up:
+        return "Up Arrow";
+        break;
+    case Qt::Key_Down:
+        return "Down Arrow";
+        break;
     default:
         return "UNKNOWN";
     }
@@ -116,72 +129,84 @@ void Settings::setP1_thrust()
 {
     ui->Player1_thrust->setText("");
     activebox = 0;
+    ui->line->setFocus();
 }
 
 void Settings::setP1_left()
 {
     ui->Player1_left->setText("");
     activebox = 1;
+    ui->line->setFocus();
 }
 
 void Settings::setP1_right()
 {
     ui->Player1_right->setText("");
     activebox = 2;
+    ui->line->setFocus();
 }
 
 void Settings::setP1_shield()
 {
     ui->Player1_shield->setText("");
     activebox = 3;
+    ui->line->setFocus();
 }
 
 void Settings::setP1_shoot()
 {
     ui->Player1_shoot->setText("");
     activebox = 4;
+    ui->line->setFocus();
 }
 
 void Settings::setP1_brake()
 {
     ui->Player1_brake->setText("");
     activebox = 5;
+    ui->line->setFocus();
 }
 ////
 void Settings::setP2_thrust()
 {
     ui->Player2_thrust->setText("");
     activebox = 6;
+    ui->line->setFocus();
 }
 
 void Settings::setP2_left()
 {
     ui->Player2_left->setText("");
     activebox = 7;
+    ui->line->setFocus();
 }
 
 void Settings::setP2_right()
 {
     ui->Player2_right->setText("");
     activebox = 8;
+    ui->line->setFocus();
 }
 
 void Settings::setP2_shield()
 {
     ui->Player2_shield->setText("");
     activebox = 9;
+    ui->line->setFocus();
 }
 
 void Settings::setP2_shoot()
 {
     ui->Player2_shoot->setText("");
     activebox = 10;
+    ui->line->setFocus();
 }
 
 void Settings::setP2_brake()
 {
     ui->Player2_brake->setText("");
     activebox = 11;
+    ui->line->setFocus();
 }
 ////
 void Settings::keyPressEvent( QKeyEvent *event )
