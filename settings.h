@@ -14,19 +14,19 @@ namespace Ui {
 struct KeySettings
 {
 public:
-    Qt::Key player1_thrust;
-    Qt::Key player1_left;
-    Qt::Key player1_right;
-    Qt::Key player1_shoot;
-    Qt::Key player1_shield;
-    Qt::Key player1_brake;
+    int player1_thrust;
+    int player1_left;
+    int player1_right;
+    int player1_shoot;
+    int player1_shield;
+    int player1_brake;
 
-    Qt::Key player2_thrust;
-    Qt::Key player2_left;
-    Qt::Key player2_right;
-    Qt::Key player2_shoot;
-    Qt::Key player2_shield;
-    Qt::Key player2_brake;
+    int player2_thrust;
+    int player2_left;
+    int player2_right;
+    int player2_shoot;
+    int player2_shield;
+    int player2_brake;
 };
 
 class Settings : public QDialog
@@ -42,11 +42,24 @@ private:
     std::vector<QPushButton*> buttons;
     KeySettings editedSettings;
     Ui::Settings *ui;
-    static QString keyString(Qt::Key); // returns a string representitive of what key is pressed
-
+    static QString keyString(int); // returns a string representitive of what key is pressed
+private slots:
     void setP1_thrust();
+    void setP1_left();
+    void setP1_right();
+    void setP1_shield();
+    void setP1_shoot();
+    void setP1_brake();
+
+    void setP2_thrust();
+    void setP2_left();
+    void setP2_right();
+    void setP2_shield();
+    void setP2_shoot();
+    void setP2_brake();
 
 protected:
+        virtual void keyPressEvent( QKeyEvent *event );
 };
 
 #endif // SETTINGS_H
