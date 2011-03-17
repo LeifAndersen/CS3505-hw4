@@ -1,5 +1,6 @@
 #include <QString>
 #include <QKeyEvent>
+#include <sstream>
 
 #include "settings.h"
 #include "ui_settings.h"
@@ -74,8 +75,41 @@ QString Settings::keyString(int value)
     // for standard alpha keys
     if(value > 33 && value < 126)
         return QString(value);
-
- return "UNKNOWN";
+    if(value >= Qt::Key_F1 && value <= Qt::Key_F35)
+    {
+        std::stringstream ss;
+        ss << value - Qt::Key_F1 + 1;
+        return QString("F").append(ss.str().c_str());
+    }
+    switch(value)
+    {
+    case Qt::Key_Escape:
+        return "Esc";
+        break;
+    case Qt::Key_Backspace:
+        return "BackSpace";
+        break;
+    case Qt::Key_Insert:
+        return "Insert";
+        break;
+    case Qt::Key_Delete:
+        return "Del";
+        break;
+    case Qt::Key_Home:
+        return "Home";
+        break;
+    case Qt::Key_End:
+        return "End";
+        break;
+    case Qt::Key_PageUp:
+        return "PgUp";
+        break;
+    case Qt::Key_PageDown:
+        return "PgDown";
+        break;
+    default:
+        return "UNKNOWN";
+    }
 }
 
 void Settings::setP1_thrust()
