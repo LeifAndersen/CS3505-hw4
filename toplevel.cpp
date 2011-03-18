@@ -739,7 +739,12 @@ void KAstTopLevel::slotNewGame(bool twoPlayer)
     view->setRockSpeed( levels[0].rockSpeed );
     view->addRocks( levels[0].nrocks );
 //    view->showText( tr( "Press L to launch." ), yellow );
-    player1->newShip(view->width()/2, view->height()/2);
+    if(twoPlayer) {
+        player1->newShip(view->width()/4, view->height()/2);
+        player2->newShip(view->width()*3/4, view->height()/2);
+    } else {
+        player1->newShip(view->width()/2, view->height()/2);
+    }
     player1->waitShip = FALSE;
     player2->waitShip = FALSE;
     view->hideText();
