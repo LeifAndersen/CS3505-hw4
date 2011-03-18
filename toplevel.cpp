@@ -758,7 +758,7 @@ void KAstTopLevel::slotNewGame(bool twoPlayer)
 void KAstTopLevel::slotShipKilled(Player *p)
 {
     p->shipsRemain--;
-    p->shipsLCD->display( player1->shipsRemain-1 );
+    p->shipsLCD->display( p->shipsRemain-1 );
 
     playSound( "ShipDestroyed" );
 
