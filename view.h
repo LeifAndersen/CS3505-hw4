@@ -83,7 +83,6 @@ public:
     void rotateLeft( Player *p, bool r ) { p->rotateL = r; p->rotateSlow = 5; }
     void rotateRight( Player *p, bool r ) { p->rotateR = r; p->rotateSlow = 5; }
     void thrust( Player *p, bool t ) { p->thrustShip = t && p->shipPower > 0; }
-    void shoot( Player *p, bool s ) { p->shootShip = s; p->shootDelay = 0; }
     void setShield( Player *p, bool s );
     void teleport( Player *p, bool te) { p->teleportShip = te && p->mTeleportCount; }
     void brake( Player *p, bool b );
@@ -92,17 +91,13 @@ public:
     void showText( const QString &text, const QColor &color, bool scroll=TRUE );
     void hideText();
 
-    int shots( Player *p ) const { return p->shotsFired; }
-    int hits( Player *p ) const { return p->shotsHit; }
-    int power( Player *p ) const { return p->shipPower; }
-
     int teleportCount( Player *p ) const { return p->mTeleportCount; }
     int brakeCount( Player *p ) const { return p->mBrakeCount; }
     int shieldCount( Player *p ) const { return p->mShieldCount; }
     int shootCount( Player *p ) const { return p->mShootCount; }
 
 signals:
-    void shipKilled();
+    void shipKilled(Player *);
     void rockHit( int size );
     void rocksRemoved();
     void updateVitals();
@@ -114,7 +109,6 @@ protected:
     bool readSprites();
     void wrapSprite( QGraphicsItem * );
     void rockHit( AnimatedPixmapItem * );
-    void reducePower(Player *p, int val);
     void addExhaust( double x, double y, double dx, double dy, int count );
     void processMissiles(Player *p);
     void processShip(Player *p);
@@ -137,12 +131,7 @@ private:
     Q3PtrList<KBit> bits;
     Q3PtrList<KExhaust> exhaust;
     Q3PtrList<KPowerup> powerups;
-    KShield *shield;
-    AnimatedPixmapItem *ship;
     QGraphicsTextItem *textSprite;
-
-    double shipDx;
-    double shipDy;
 
     int  textDy;
     int  mFrameNum;

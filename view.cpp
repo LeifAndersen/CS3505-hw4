@@ -144,7 +144,9 @@ KAsteroidsView::KAsteroidsView(Player *player1, Player *player2,
     textSprite->setFont( font );
     textSprite->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
-    shield = 0;
+    player1->shield = 0;
+    player2->shield = 0;
+
     player1->shieldOn = FALSE;
     player2->shieldOn = FALSE;
     refreshRate = REFRESH_DELAY;
@@ -200,8 +202,12 @@ void KAsteroidsView::reset()
     mFrameNum = 0;
     mPaused = FALSE;
 
-    ship->hide();
-    shield->hide();
+    player1->ship->hide();
+    player1->shield->hide();
+
+    player1->ship->hide();
+    player1->shield->hide();
+
 /*
     if ( mTimerId >= 0 ) {
 	killTimer( mTimerId );
@@ -217,11 +223,11 @@ void KAsteroidsView::newGame()
     if(!initialized)
         return;
     if(player1->shieldOn) {
-      shield->hide();
+      player1->shield->hide();
       player1->shieldOn = FALSE;
     }
     if(player2->shieldOn) {
-        shield->hide();
+        player2->shield->hide();
         player2->shieldOn = FALSE;
     }
 
@@ -257,13 +263,13 @@ void KAsteroidsView::newShip(Player *p)
 {
     if ( !initialized )
 	return;
-    ship->setPos( width()/2, height()/2 );
-    ship->setFrame( 0 );
-    shield->setPos( width()/2, height()/2 );
-    shield->setFrame( 0 );
-    ship->setVelocity( 0.0, 0.0 );
-    shipDx = 0;
-    shipDy = 0;
+    p->ship->setPos( width()/2, height()/2 );
+    p->ship->setFrame( 0 );
+    p->shield->setPos( width()/2, height()/2 );
+    p->shield->setFrame( 0 );
+    p->ship->setVelocity( 0.0, 0.0 );
+    p->shipDx = 0;
+    p->shipDy = 0;
     p->shipAngle = 0;
     p->rotateL = FALSE;
     p->rotateR = FALSE;
@@ -281,8 +287,8 @@ void KAsteroidsView::newShip(Player *p)
     p->mTeleportCount = 0;
     p->mShootCount = 0;
 
-    ship->show();
-    shield->show();
+    p->ship->show();
+    p->shield->show();
     p->mShieldCount = 1;   // just in case the ship appears on a rock.
     shieldTimer->start( 1000, TRUE );
 }
@@ -333,13 +339,22 @@ bool KAsteroidsView::readSprites()
 	i++;
     }
 
-    ship = new AnimatedPixmapItem( animation[ID_SHIP], &field );
-    ship->hide();
+    player1->ship = new AnimatedPixmapItem( animation[ID_SHIP], &field );
+    player1->ship->hide();
 
-    shield = new KShield( animation[ID_SHIELD], &field );
-    shield->hide();
+    player2->ship = new AnimatedPixmapItem( animation[ID_SHIP], &field );
+    player2->ship->hide();
 
-    return (!ship->image(0).isNull() && !shield->image(0).isNull());
+    player1->shield = new KShield( animation[ID_SHIELD], &field );
+    player1->shield->hide();
+
+    player2->shield = new KShield( animation[ID_SHIELD], &field );
+    player2->shield->hide();
+
+    return (!player1->ship->image(0).isNull()
+            && !player1->shield->image(0).isNull()
+            && !player2->ship->image(0).isNull()
+            && !player2->shield->image(0).isNull());
 }
 
 // - - -
@@ -433,7 +448,8 @@ void KAsteroidsView::timerEvent(QTimerEvent *)
 	wrapSprite( rock );
     }
 
-    wrapSprite( ship );
+    wrapSprite(player1->ship);
+    wrapSprite(player2->ship);
 
     // check for missile collision with rocks.
     processMissiles(player1);
@@ -476,7 +492,7 @@ void KAsteroidsView::timerEvent(QTimerEvent *)
     }
 
     if ( player1->vitalsChanged && !(mFrameNum % 10) ) {
-	emit updateVitals();
+    emit updateVitals();
     player1->vitalsChanged = FALSE;
     }
 
@@ -590,22 +606,6 @@ void KAsteroidsView::rockHit( AnimatedPixmapItem *hit )
 	emit rocksRemoved();
 }
 
-void KAsteroidsView::reducePower(Player *p, int val)
-{
-    p->shipPower -= val;
-    if ( p->shipPower <= 0 )
-    {
-    p->shipPower = 0;
-    p->thrustShip = FALSE;
-    if ( p->shieldOn )
-	{
-        p->shieldOn = FALSE;
-        shield->hide();
-	}
-    }
-    p->vitalsChanged = TRUE;
-}
-
 void KAsteroidsView::addExhaust( double x, double y, double dx,
 				 double dy, int count )
 {
@@ -659,210 +659,210 @@ void KAsteroidsView::processMissiles(Player *p)
 
 void KAsteroidsView::processShip(Player *p)
 {
-    if ( ship->isVisible() )
+    if ( p->ship->isVisible() )
     {
     if ( p->shieldOn )
-	{
-	    shield->show();
-        reducePower(p, SHIELD_ON_COST);
-	    static int sf = 0;
-	    sf++;
+    {
+        p->shield->show();
+        p->reducePower(SHIELD_ON_COST);
+        static int sf = 0;
+        sf++;
 
-	    if ( sf % 2 )
-		shield->setFrame( (shield->frame()+1) % shield->frameCount() );
-	    shield->setPos( ship->x() - 9, ship->y() - 9 );
+        if ( sf % 2 )
+        p->shield->setFrame( (p->shield->frame()+1) % p->shield->frameCount() );
+        p->shield->setPos( p->ship->x() - 9, p->ship->y() - 9 );
 
-	    QList<QGraphicsItem *> hits = shield->collidingItems(Qt::IntersectsItemBoundingRect);
-	    QList<QGraphicsItem *>::Iterator it;
-	    for ( it = hits.begin(); it != hits.end(); ++it )
-	    {
-		if ( (*it)->type() >= ID_ROCK_LARGE &&
-		     (*it)->type() <= ID_ROCK_SMALL && (*it)->collidesWithItem(shield) )
-		{
-		    int factor;
-		    switch ( (*it)->type() )
-		    {
-			case ID_ROCK_LARGE:
-			    factor = 3;
-			    break;
+        QList<QGraphicsItem *> hits = p->shield->collidingItems(Qt::IntersectsItemBoundingRect);
+        QList<QGraphicsItem *>::Iterator it;
+        for ( it = hits.begin(); it != hits.end(); ++it )
+        {
+        if ( (*it)->type() >= ID_ROCK_LARGE &&
+             (*it)->type() <= ID_ROCK_SMALL && (*it)->collidesWithItem(p->shield) )
+        {
+            int factor;
+            switch ( (*it)->type() )
+            {
+            case ID_ROCK_LARGE:
+                factor = 3;
+                break;
 
-			case ID_ROCK_MEDIUM:
-			    factor = 2;
-			    break;
+            case ID_ROCK_MEDIUM:
+                factor = 2;
+                break;
 
-			default:
-			    factor = 1;
-		    }
+            default:
+                factor = 1;
+            }
 
             if ( factor > p->mShieldCount )
-		    {
-			// shield not strong enough
+            {
+            // shield not strong enough
             p->shieldOn = FALSE;
-			break;
-		    }
-		    rockHit( static_cast<AnimatedPixmapItem *>(*it) );
-		    // the more shields we have the less costly
-            reducePower( p, factor * (SHIELD_HIT_COST - p->mShieldCount*2) );
-		}
-	    }
-	}
+            break;
+            }
+            rockHit( static_cast<AnimatedPixmapItem *>(*it) );
+            // the more shields we have the less costly
+            p->reducePower(factor * (SHIELD_HIT_COST - p->mShieldCount*2));
+        }
+        }
+    }
 
     if ( !p->shieldOn )
-	{
-	    shield->hide();
-	    QList<QGraphicsItem *> hits = ship->collidingItems(Qt::IntersectsItemBoundingRect);
-	    QList<QGraphicsItem *>::Iterator it;
-	    for ( it = hits.begin(); it != hits.end(); ++it )
-	    {
-		if ( (*it)->type() >= ID_ROCK_LARGE &&
-		     (*it)->type() <= ID_ROCK_SMALL && (*it)->collidesWithItem(ship))
-		{
-		    KBit *bit;
-		    for ( int i = 0; i < 12; i++ )
-		    {
+    {
+        p->shield->hide();
+        QList<QGraphicsItem *> hits = p->ship->collidingItems(Qt::IntersectsItemBoundingRect);
+        QList<QGraphicsItem *>::Iterator it;
+        for ( it = hits.begin(); it != hits.end(); ++it )
+        {
+        if ( (*it)->type() >= ID_ROCK_LARGE &&
+             (*it)->type() <= ID_ROCK_SMALL && (*it)->collidesWithItem(p->ship))
+        {
+            KBit *bit;
+            for ( int i = 0; i < 12; i++ )
+            {
                       bit = new KBit( animation[ID_BIT], &field );
-		      bit->setPos( ship->x() + 5 - randDouble() * 10,
-                                   ship->y() + 5 - randDouble() * 10 );
+              bit->setPos( p->ship->x() + 5 - randDouble() * 10,
+                                   p->ship->y() + 5 - randDouble() * 10 );
                       bit->setFrame( randInt(bit->frameCount()) );
-		      bit->setVelocity( 1-randDouble()*2,
-					1-randDouble()*2 );
-		      bit->setDeath( 60 + randInt(60) );
-		      bits.append( bit );
-		    }
-		    ship->hide();
-		    shield->hide();
-		    emit shipKilled();
-		    break;
-		}
-	    }
-	}
+              bit->setVelocity( 1-randDouble()*2,
+                    1-randDouble()*2 );
+              bit->setDeath( 60 + randInt(60) );
+              bits.append( bit );
+            }
+            p->ship->hide();
+            p->shield->hide();
+            emit shipKilled(p);
+            break;
+        }
+        }
+    }
 
 
     if ( p->rotateSlow )
         p->rotateSlow--;
 
     if ( p->rotateL )
-	{
+    {
         p->shipAngle -= p->rotateSlow ? 1 : p->rotateRate;
         if ( p->shipAngle < 0 )
         p->shipAngle += SHIP_STEPS;
-	}
+    }
 
     if ( p->rotateR )
-	{
+    {
         p->shipAngle += p->rotateSlow ? 1 : p->rotateRate;
         if ( p->shipAngle >= SHIP_STEPS )
         p->shipAngle -= SHIP_STEPS;
-	}
+    }
 
     double angle = p->shipAngle * PI_X_2 / SHIP_STEPS;
-	double cosangle = cos( angle );
-	double sinangle = sin( angle );
+    double cosangle = cos( angle );
+    double sinangle = sin( angle );
 
     if ( p->brakeShip )
-	{
+    {
         p->thrustShip = FALSE;
         p->rotateL = FALSE;
         p->rotateR = FALSE;
         p->rotateRate = ROTATE_RATE;
-	    if ( fabs(shipDx) < 2.5 && fabs(shipDy) < 2.5 )
-	    {
-		shipDx = 0.0;
-		shipDy = 0.0;
-		ship->setVelocity( shipDx, shipDy );
+        if ( fabs(p->shipDx) < 2.5 && fabs(p->shipDy) < 2.5 )
+        {
+        p->shipDx = 0.0;
+        p->shipDy = 0.0;
+        p->ship->setVelocity( p->shipDx, p->shipDy );
         p->brakeShip = FALSE;
-	    }
-	    else
-	    {
-		double motionAngle = atan2( -shipDy, -shipDx );
-		if ( angle > M_PI )
-		    angle -= PI_X_2;
-		double angleDiff = angle - motionAngle;
-		if ( angleDiff > M_PI )
-		    angleDiff = PI_X_2 - angleDiff;
-		else if ( angleDiff < -M_PI )
-		    angleDiff = PI_X_2 + angleDiff;
-		double fdiff = fabs( angleDiff );
-		if ( fdiff > 0.08 )
-		{
-		    if ( angleDiff > 0 )
+        }
+        else
+        {
+        double motionAngle = atan2( -p->shipDy, -p->shipDx );
+        if ( angle > M_PI )
+            angle -= PI_X_2;
+        double angleDiff = angle - motionAngle;
+        if ( angleDiff > M_PI )
+            angleDiff = PI_X_2 - angleDiff;
+        else if ( angleDiff < -M_PI )
+            angleDiff = PI_X_2 + angleDiff;
+        double fdiff = fabs( angleDiff );
+        if ( fdiff > 0.08 )
+        {
+            if ( angleDiff > 0 )
             p->rotateL = TRUE;
-		    else if ( angleDiff < 0 )
+            else if ( angleDiff < 0 )
             p->rotateR = TRUE;
-		    if ( fdiff > 0.6 )
+            if ( fdiff > 0.6 )
             p->rotateRate = p->mBrakeCount + 1;
-		    else if ( fdiff > 0.4 )
+            else if ( fdiff > 0.4 )
             p->rotateRate = 2;
-		    else
+            else
             p->rotateRate = 1;
 
             if ( p->rotateRate > 5 )
             p->rotateRate = 5;
-		}
-		else if ( fabs(shipDx) > 1 || fabs(shipDy) > 1 )
-		{
+        }
+        else if ( fabs(p->shipDx) > 1 || fabs(p->shipDy) > 1 )
+        {
             p->thrustShip = TRUE;
-		    // we'll make braking a bit faster
-            shipDx += cosangle/6 * (p->mBrakeCount - 1);
-            shipDy += sinangle/6 * (p->mBrakeCount - 1);
-            reducePower( p, BRAKE_ON_COST );
-		    addExhaust( ship->x() + 20 - cosangle*22,
-				ship->y() + 20 - sinangle*22,
-				shipDx-cosangle, shipDy-sinangle,
+            // we'll make braking a bit faster
+            p->shipDx += cosangle/6 * (p->mBrakeCount - 1);
+            p->shipDy += sinangle/6 * (p->mBrakeCount - 1);
+            p->reducePower(BRAKE_ON_COST);
+            addExhaust( p->ship->x() + 20 - cosangle*22,
+                p->ship->y() + 20 - sinangle*22,
+                p->shipDx-cosangle, p->shipDy-sinangle,
                 p->mBrakeCount+1 );
-		}
-	    }
-	}
+        }
+        }
+    }
 
     if ( p->thrustShip )
-	{
-	    // The ship has a terminal velocity, but trying to go faster
-	    // still uses fuel (can go faster diagonally - don't care).
-	    double thrustx = cosangle/4;
-	    double thrusty = sinangle/4;
-	    if ( fabs(shipDx + thrustx) < MAX_SHIP_SPEED )
-		shipDx += thrustx;
-	    if ( fabs(shipDy + thrusty) < MAX_SHIP_SPEED )
-		shipDy += thrusty;
-	    ship->setVelocity( shipDx, shipDy );
-        reducePower( p, 1 );
-	    addExhaust( ship->x() + 20 - cosangle*20,
-			ship->y() + 20 - sinangle*20,
-			shipDx-cosangle, shipDy-sinangle, 3 );
-	}
+    {
+        // The ship has a terminal velocity, but trying to go faster
+        // still uses fuel (can go faster diagonally - don't care).
+        double thrustx = cosangle/4;
+        double thrusty = sinangle/4;
+        if ( fabs(p->shipDx + thrustx) < MAX_SHIP_SPEED )
+        p->shipDx += thrustx;
+        if ( fabs(p->shipDy + thrusty) < MAX_SHIP_SPEED )
+        p->shipDy += thrusty;
+        p->ship->setVelocity( p->shipDx, p->shipDy );
+        p->reducePower(1);
+        addExhaust( p->ship->x() + 20 - cosangle*20,
+            p->ship->y() + 20 - sinangle*20,
+            p->shipDx-cosangle, p->shipDy-sinangle, 3 );
+    }
 
-    ship->setFrame( p->shipAngle >> 1 );
+    p->ship->setFrame( p->shipAngle >> 1 );
 
     if ( p->shootShip )
-	{
+    {
         if ( !p->shootDelay && (int)missiles.count() < p->mShootCount + 4 )
-	    {
-	      KMissile *missile = new KMissile( animation[ID_MISSILE], &field );
-	      missile->setPos( 21+ship->x()+cosangle*21,
-			     21+ship->y()+sinangle*21 );
+        {
+          KMissile *missile = new KMissile( animation[ID_MISSILE], &field );
+          missile->setPos( 21+p->ship->x()+cosangle*21,
+                 21+p->ship->y()+sinangle*21 );
               missile->setFrame( 0 );
-	      missile->setVelocity( shipDx + cosangle*MISSILE_SPEED,
-				    shipDy + sinangle*MISSILE_SPEED );
-	      missiles.append( missile );
+          missile->setVelocity( p->shipDx + cosangle*MISSILE_SPEED,
+                    p->shipDy + sinangle*MISSILE_SPEED );
+          missiles.append( missile );
           p->shotsFired++;
-          reducePower( p, 1 );
+          p->reducePower(1);
 
           p->shootDelay = 5;
-	    }
+        }
 
         if ( p->shootDelay )
           p->shootDelay--;
-	}
+    }
 
     if ( p->teleportShip )
-	{
-	    int ra = qrand() % 10;
-	    if( ra == 0 )
-	    ra += qrand() % 20;
-	    int xra = ra * 60 + ( (qrand() % 20) * (qrand() % 20) );
-	    int yra = ra * 50 - ( (qrand() % 20) * (qrand() % 20) );
-	    ship->setPos( xra, yra );
-	}
+    {
+        int ra = qrand() % 10;
+        if( ra == 0 )
+        ra += qrand() % 20;
+        int xra = ra * 60 + ( (qrand() % 20) * (qrand() % 20) );
+        int yra = ra * 50 - ( (qrand() % 20) * (qrand() % 20) );
+        p->ship->setPos( xra, yra );
+    }
 
     p->vitalsChanged = TRUE;
     }
@@ -898,7 +898,7 @@ void KAsteroidsView::processPowerups(Player *p)
 	    QList<QGraphicsItem *>::Iterator it;
 	    for ( it = hits.begin(); it != hits.end(); ++it )
 	    {
-		if ( (*it) == ship )
+        if ( (*it) == p->ship )
 		{
 		    switch( pup->type() )
 		    {
@@ -927,7 +927,7 @@ void KAsteroidsView::processPowerups(Player *p)
 		    powerups.removeRef( pup );
             p->vitalsChanged = TRUE;
 		}
-		else if ( (*it) == shield )
+        else if ( (*it) == p->shield )
 		{
 		    powerups.removeRef( pup );
 		}
@@ -947,9 +947,10 @@ void KAsteroidsView::processPowerups(Player *p)
 
 void KAsteroidsView::hideShield()
 {
-    shield->hide();
+    player1->shield->hide();
     player1->mShieldCount = 0;
     player1->shieldOn = FALSE;
+    player2->shield->hide();
     player2->mShieldCount = 0;
     player2->shieldOn = FALSE;
 }

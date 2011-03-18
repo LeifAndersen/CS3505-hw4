@@ -5,6 +5,16 @@
 #include <QLCDNumber>
 
 #include "ledmeter.h"
+#include "sprites.h"
+
+#define REFRESH_DELAY           33
+#define SHIP_SPEED              0.3
+#define MISSILE_SPEED           10.0
+#define SHIP_STEPS              64
+#define ROTATE_RATE             2
+#define SHIELD_ON_COST          1
+#define SHIELD_HIT_COST         30
+#define BRAKE_ON_COST           4
 
 enum Action { Launch, Thrust, RotateLeft, RotateRight, Shoot, Teleport,
                 Brake, Shield, Pause, NewGame  };
@@ -14,6 +24,14 @@ class Player : public QObject
     Q_OBJECT
 public:
     explicit Player(QObject *parent = 0);
+
+    int shots() const { return shotsFired; }
+    int hits() const { return shotsHit; }
+    int power() const { return shipPower; }
+    void shoot(bool s) {shootShip = s; shootDelay = 0; }
+    void reducePower(int val);
+
+    // Fields
     int shipsRemain;
     int score;
     bool waitShip;
@@ -26,10 +44,6 @@ public:
     bool brakeShip;
     bool pauseShip;
     bool shieldOn;
-
-    int shotsFired;
-    int shotsHit;
-    int shootDelay;
 
     int mBrakeCount;
     int mShieldCount;
@@ -54,6 +68,16 @@ public:
     KALedMeter *powerMeter;
 
     QMap<int,Action> actions;
+
+    KShield *shield;
+    AnimatedPixmapItem *ship;
+
+    double shipDx;
+    double shipDy;
+
+    int shotsFired;
+    int shotsHit;
+    int shootDelay;
 
 signals:
 

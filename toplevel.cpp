@@ -117,8 +117,8 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
 {
 
     // Set up the players
-    player1 = new Player();
-    player2 = new Player();
+    player1 = new Player(this);
+    player2 = new Player(this);
 
     QWidget *border = new QWidget( this );
     border->setBackgroundColor( Qt::black );
@@ -135,7 +135,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
 
     view = new KAsteroidsView(player1, player2, mainWin);
     view->setFocusPolicy( Qt::StrongFocus );
-    connect( view, SIGNAL( shipKilled() ), SLOT( slotShipKilled() ) );
+    connect( view, SIGNAL( shipKilled(Player *) ), SLOT( slotShipKilled(Player *) ) );
     connect( view, SIGNAL( rockHit(int) ), SLOT( slotRockHit(int) ) );
     connect( view, SIGNAL( rocksRemoved() ), SLOT( slotRocksRemoved() ) );
     connect( view, SIGNAL( updateVitals() ), SLOT( slotUpdateVitals() ) );
@@ -494,7 +494,7 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
             break;
 
         case Shoot:
-            view->shoot(player2, TRUE);
+            player2->shoot(TRUE);
             break;
 
         case Shield:
@@ -535,7 +535,7 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
         break;
 
     case Shoot:
-        view->shoot(player1, TRUE);
+        player1->shoot(TRUE);
         break;
 
     case Shield:
@@ -586,7 +586,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
             break;
 
         case Shoot:
-            view->shoot(player2, FALSE);
+            player2->shoot(FALSE);
             break;
 
         case Brake:
@@ -616,7 +616,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
             break;
 
         case NewGame:
-            slotNewGame();
+            slotNewGame(true);
             break;
             /*
             case Pause:
@@ -655,7 +655,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
         break;
 
     case Shoot:
-        view->shoot(player1, FALSE);
+        player1->shoot(FALSE);
         break;
 
     case Brake:
@@ -685,7 +685,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
         break;
 
 	case NewGame:
-	    slotNewGame();
+        slotNewGame(false);
 	    break;
         /*
         case Pause:
@@ -718,11 +718,15 @@ void KAstTopLevel::hideEvent( QHideEvent *e )
     view->pause( TRUE );
 }
 
-void KAstTopLevel::slotNewGame()
+void KAstTopLevel::slotNewGame(bool twoPlayer)
 {
     player1->score = 0;
     player2->score = 0;
     player1->shipsRemain = SB_SHIPS;
+    if(twoPlayer)
+        player2->shipsRemain = SB_SHIPS;
+    else
+        player2->shipsRemain = 1;
     player1->scoreLCD->display( 0 );
     player2->scoreLCD->display( 0 );
     level = 0;
@@ -740,21 +744,21 @@ void KAstTopLevel::slotNewGame()
     isPaused = FALSE;
 }
 
-void KAstTopLevel::slotShipKilled()
+void KAstTopLevel::slotShipKilled(Player *p)
 {
-    player1->shipsRemain--;
-    player1->shipsLCD->display( player1->shipsRemain-1 );
+    p->shipsRemain--;
+    p->shipsLCD->display( player1->shipsRemain-1 );
 
     playSound( "ShipDestroyed" );
 
-    if ( player1->shipsRemain )
+    if (p->shipsRemain )
     {
-        player1->waitShip = TRUE;
-        view->showText( tr( "P1:Ship Destroyed. Press L to launch."), Qt::yellow );
+        p->waitShip = TRUE;
+        view->showText( tr( "Ship Destroyed. Press L to launch."), Qt::yellow );
     }
-    else
+    else if(!player1->shipsRemain || !player2->shipsRemain)
     {
-        view->showText( tr("P1:Game Over!"), Qt::red );
+        view->showText( tr("Game Over!"), Qt::red );
         view->endGame();
     doStats();
 //        highscore->addEntry( score, level, showHiscores );
@@ -799,8 +803,8 @@ void KAstTopLevel::slotRocksRemoved()
 void KAstTopLevel::doStats()
 {
     QString r( "0.00" );
-    if ( view->shots(player1) )
-     r = QString::number( (double)view->hits(player1) / view->shots(player1) * 100.0,
+    if ( player1->shots() )
+     r = QString::number( (double)player1->hits() / player1->shots() * 100.0,
                  'g', 2 );
 
 /* multi-line text broken in Qt 3
@@ -819,13 +823,13 @@ void KAstTopLevel::slotUpdateVitals()
     player1->brakesLCD->display(view->brakeCount(player1) );
     player1->shieldLCD->display(view->shieldCount(player1) );
     player1->shootLCD->display(view->shootCount(player1) );
-    player1->powerMeter->setValue(view->power(player1) );
+    player1->powerMeter->setValue(player1->power() );
 
     // Player 2
     player2->brakesLCD->display(view->brakeCount(player2));
     player2->shieldLCD->display(view->shieldCount(player2));
     player2->shootLCD->display(view->shootCount(player2));
-    player2->powerMeter->setValue(view->power(player2));
+    player2->powerMeter->setValue(player2->power());
 }
 
 void KAstTopLevel::mapKeys( KeySettings newSettings )
