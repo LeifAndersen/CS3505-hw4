@@ -63,6 +63,7 @@
 
 #include "toplevel.h"
 #include "ledmeter.h"
+#include "settings.h"
 
 
 #define SB_SCORE	1
@@ -432,6 +433,23 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     player2->actions.insert( Qt::Key_7, Launch );
     player2->actions.insert( Qt::Key_M, NewGame );
 
+    Keys.player1_thrust = Qt::Key_Up;
+    Keys.player1_left = Qt::Key_Left;
+    Keys.player1_right = Qt::Key_Right;
+    Keys.player1_shoot = Qt::Key_Space;
+    Keys.player1_shield = Qt::Key_S;
+    Keys.player1_brake = Qt::Key_X;
+
+    Keys.player2_thrust = Qt::Key_8;
+    Keys.player2_left = Qt::Key_4;
+    Keys.player2_right = Qt::Key_6;
+    Keys.player2_shoot = Qt::Key_Enter;
+    Keys.player2_shield = Qt::Key_Plus;
+    Keys.player2_brake = Qt::Key_0;
+
+    keySettings = new Settings(&Keys);
+    connect(keySettings, SIGNAL( SubmitKeyChange(KeySettings) ), this, SLOT( mapKeys(KeySettings) ));
+
     view->showText( tr( "N - 1 Player ---- M - 2 Players" ), Qt::yellow );
 }
 
@@ -446,6 +464,12 @@ void KAstTopLevel::playSound( const char * )
 void KAstTopLevel::keyPressEvent( QKeyEvent *event )
 {
     Action a;
+
+    if(event->key() == Qt::Key_F1)
+    {
+        keySettings->show();
+        return;
+    }
 
     if (event->isAutoRepeat() || !player1->actions.contains(event->key())) {
         if (event->isAutoRepeat() || !player2->actions.contains(event->key())) {
@@ -802,4 +826,41 @@ void KAstTopLevel::slotUpdateVitals()
     player2->shieldLCD->display(view->shieldCount(player2));
     player2->shootLCD->display(view->shootCount(player2));
     player2->powerMeter->setValue(view->power(player2));
+}
+
+void KAstTopLevel::mapKeys( KeySettings newSettings )
+{
+    player1->actions.remove( Keys.player1_thrust );
+    player1->actions.remove( Keys.player1_left );
+    player1->actions.remove( Keys.player1_right );
+    player1->actions.remove( Keys.player1_shoot );
+    // player1->actions.insert( Qt::Key_Z, Teleport );
+    player1->actions.remove( Keys.player1_brake );
+    player1->actions.remove( Keys.player1_shield );
+
+    player1->actions.insert( newSettings.player1_thrust, Thrust );
+    player1->actions.insert( newSettings.player1_left, RotateLeft );
+    player1->actions.insert( newSettings.player1_right, RotateRight );
+    player1->actions.insert( newSettings.player1_shoot, Shoot );
+    // player1->actions.insert( Qt::Key_Z, Teleport );
+    player1->actions.insert( newSettings.player1_brake, Brake );
+    player1->actions.insert( newSettings.player1_shield, Shield );
+
+    player2->actions.remove( Keys.player2_thrust );
+    player2->actions.remove( Keys.player2_left );
+    player2->actions.remove( Keys.player2_right );
+    player2->actions.remove( Keys.player2_shoot );
+    // player2->actions.insert( Qt::Key_Z, Teleport );
+    player2->actions.remove( Keys.player2_brake );
+    player2->actions.remove( Keys.player2_shield );
+
+    player2->actions.insert( newSettings.player2_thrust, Thrust );
+    player2->actions.insert( newSettings.player2_left, RotateLeft );
+    player2->actions.insert( newSettings.player2_right, RotateRight );
+    player2->actions.insert( newSettings.player2_shoot, Shoot );
+    // player1->actions.insert( Qt::Key_Z, Teleport );
+    player2->actions.insert( newSettings.player2_brake, Brake );
+    player2->actions.insert( newSettings.player2_shield, Shield );
+
+    Keys = newSettings;
 }

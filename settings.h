@@ -13,7 +13,7 @@ namespace Ui {
 // used to comunicate to the settings class what the settings are
 struct KeySettings
 {
-public:
+public:    
     int player1_thrust;
     int player1_left;
     int player1_right;
@@ -44,6 +44,7 @@ private:
     Ui::Settings *ui;
     static QString keyString(int); // returns a string representitive of what key is pressed
 private slots:
+    void on_buttonBox_accepted();
     void setP1_thrust();
     void setP1_left();
     void setP1_right();
@@ -57,6 +58,10 @@ private slots:
     void setP2_shield();
     void setP2_shoot();
     void setP2_brake();
+
+signals:
+    void SubmitKeyChange(KeySettings);
+
 
 protected:
         virtual void keyPressEvent( QKeyEvent *event );

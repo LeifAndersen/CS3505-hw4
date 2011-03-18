@@ -58,6 +58,7 @@
 
 #include "view.h"
 #include "player.h"
+#include "settings.h"
 
 class KALedMeter;
 QT_BEGIN_NAMESPACE
@@ -91,8 +92,12 @@ private slots:
 
     void slotUpdateVitals();
 
+    void mapKeys( KeySettings );
+
 private:
     KAsteroidsView *view;
+    Settings *keySettings;
+    KeySettings Keys;
 
     QLCDNumber *levelLCD;
 

@@ -210,7 +210,7 @@ void Settings::setP2_brake()
 }
 ////
 void Settings::keyPressEvent( QKeyEvent *event )
-{
+{    
     if(activebox>=0)
     {
         QString text(keyString(event->key()));
@@ -269,4 +269,9 @@ void Settings::keyPressEvent( QKeyEvent *event )
     }
 
     activebox = -1;
+}
+
+void Settings::on_buttonBox_accepted()
+{
+    emit SubmitKeyChange(editedSettings);
 }
