@@ -607,9 +607,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
         case Launch:
             if (player2->waitShip)
             {
-                player1->newShip(view->width()/4, view->height()/2);
-                player2->newShip(view->width()*3/4, view->height()/2);
-                player1->waitShip = FALSE;
+                player2->newShip(view->width()/2, view->height()/2);
                 player2->waitShip = FALSE;
                 view->hideText();
             }
