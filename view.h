@@ -123,7 +123,6 @@ private:
     QGraphicsView view;
     QMap<int, QList<QPixmap> > animation;
     Q3PtrList<AnimatedPixmapItem> rocks;
-    Q3PtrList<KMissile> missiles;
     Q3PtrList<KBit> bits;
     Q3PtrList<KExhaust> exhaust;
     Q3PtrList<KPowerup> powerups;

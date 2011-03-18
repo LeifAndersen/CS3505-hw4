@@ -96,6 +96,8 @@ public:
     bool initialized;
     QTimer *shieldTimer;
 
+    Q3PtrList<KMissile> missiles;
+
 signals:
 
 public slots:

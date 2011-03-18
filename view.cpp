@@ -131,7 +131,8 @@ KAsteroidsView::KAsteroidsView(Player *player1, Player *player2,
                               | QGraphicsView::DontAdjustForAntialiasing);
     view.viewport()->setFocusProxy( this );
     rocks.setAutoDelete( TRUE );
-    missiles.setAutoDelete( TRUE );
+    player1->missiles.setAutoDelete( TRUE );
+    player2->missiles.setAutoDelete( TRUE );
     bits.setAutoDelete( TRUE );
     powerups.setAutoDelete( TRUE );
     exhaust.setAutoDelete( TRUE );
@@ -186,7 +187,8 @@ void KAsteroidsView::reset()
     if ( !initialized )
         return;
     rocks.clear();
-    missiles.clear();
+    player1->missiles.clear();
+    player2->missiles.clear();
     bits.clear();
     powerups.clear();
     exhaust.clear();
@@ -407,6 +409,7 @@ void KAsteroidsView::timerEvent(QTimerEvent *)
 
     // check for missile collision with rocks.
     processMissiles(player1);
+    processMissiles(player2);
 
     // these are generated when a ship explodes
     for ( KBit *bit = bits.first(); bit; bit = bits.next() )
@@ -580,7 +583,7 @@ void KAsteroidsView::processMissiles(Player *p)
 
     // if a missile has hit a rock, remove missile and break rock into smaller
     // rocks or remove completely.
-    Q3PtrListIterator<KMissile> it(missiles);
+    Q3PtrListIterator<KMissile> it(p->missiles);
 
     for ( ; it.current(); ++it )
     {
@@ -589,7 +592,7 @@ void KAsteroidsView::processMissiles(Player *p)
 
         if ( missile->expired() )
         {
-            missiles.removeRef( missile );
+            p->missiles.removeRef( missile );
             continue;
         }
 
@@ -604,7 +607,7 @@ void KAsteroidsView::processMissiles(Player *p)
             {
                 p->shotsHit++;
                 rockHit( static_cast<AnimatedPixmapItem *>(*hit) );
-                missiles.removeRef( missile );
+                p->missiles.removeRef( missile );
                 break;
             }
         }
@@ -791,7 +794,7 @@ void KAsteroidsView::processShip(Player *p)
 
         if ( p->shootShip )
         {
-            if ( !p->shootDelay && (int)missiles.count() < p->mShootCount + 4 )
+            if ( !p->shootDelay && (int)p->missiles.count() < p->mShootCount + 4 )
             {
                 KMissile *missile = new KMissile( animation[ID_MISSILE], &field );
                 missile->setPos( 21+p->ship->x()+cosangle*21,
@@ -799,7 +802,7 @@ void KAsteroidsView::processShip(Player *p)
                 missile->setFrame( 0 );
                 missile->setVelocity( p->shipDx + cosangle*MISSILE_SPEED,
                                       p->shipDy + sinangle*MISSILE_SPEED );
-                missiles.append( missile );
+                p->missiles.append( missile );
                 p->shotsFired++;
                 p->reducePower(1);
 
