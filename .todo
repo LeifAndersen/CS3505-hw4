@@ -6,13 +6,28 @@
     <note priority="medium" time="1299959517" done="1300488981">
         Keep track of power and powerups seperatly
     </note>
+    <note priority="medium" time="1299959538" done="1300488986">
+        Get two ship objects
+    </note>
     <note priority="medium" time="1299978023" done="1299978624">
         Make bullot go further
         <comment>
             It was in some constants in sprites.h
         </comment>
     </note>
-    <note priority="medium" time="1299959538" done="1300488986">
-        Get two ship objects
+    <note priority="medium" time="1300489086">
+        Comments
+    </note>
+    <note priority="medium" time="1300489093">
+        Final Report
+    </note>
+    <note priority="medium" time="1300489109">
+        Proper text
+    </note>
+    <note priority="medium" time="1300489118">
+        Check on CADE lab
+    </note>
+    <note priority="medium" time="1300489124">
+        Fix LED scoring bug
     </note>
 </todo>
