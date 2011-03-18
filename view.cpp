@@ -428,9 +428,11 @@ void KAsteroidsView::timerEvent(QTimerEvent *)
     // move / rotate ship.
     // check for collision with a rock.
     processShip(player1);
+    processShip(player2);
 
     // move powerups and check for collision with player and missiles
     processPowerups(player1);
+    processPowerups(player2);
 
     if ( textSprite->isVisible() )
     {
