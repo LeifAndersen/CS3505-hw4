@@ -459,7 +459,7 @@ void KAsteroidsView::wrapSprite( QGraphicsItem *s )
 
 // - - -
 
-void KAsteroidsView::rockHit( AnimatedPixmapItem *hit )
+void KAsteroidsView::rockHit(Player *p, AnimatedPixmapItem *hit)
 {
     KPowerup *nPup = 0;
     int rnd = int(randDouble()*30.0) % 30;
@@ -525,13 +525,13 @@ void KAsteroidsView::rockHit( AnimatedPixmapItem *hit )
             {
                 nrock = new KRock( animation[ID_ROCK_MEDIUM], &field,
                                    ID_ROCK_MEDIUM, randInt(2), randInt(2) ? -1 : 1 );
-                emit rockHit( 0 );
+                emit rockHit(p, 0);
             }
             else
             {
                 nrock = new KRock( animation[ID_ROCK_SMALL], &field,
                                    ID_ROCK_SMALL, randInt(2), randInt(2) ? -1 : 1 );
-                emit rockHit( 1 );
+                emit rockHit(p, 1);
             }
 
             nrock->setPos( hit->x(), hit->y() );
@@ -542,7 +542,7 @@ void KAsteroidsView::rockHit( AnimatedPixmapItem *hit )
         }
     }
     else if ( hit->type() == ID_ROCK_SMALL )
-        emit rockHit( 2 );
+        emit rockHit(p,2);
     rocks.removeRef( hit );
     if ( rocks.count() == 0 )
         emit rocksRemoved();
@@ -589,7 +589,7 @@ void KAsteroidsView::processMissiles(Player *p)
                  (*hit)->type() <= ID_ROCK_SMALL && (*hit)->collidesWithItem(missile) )
             {
                 p->shotsHit++;
-                rockHit( static_cast<AnimatedPixmapItem *>(*hit) );
+                rockHit(p, static_cast<AnimatedPixmapItem *>(*hit));
                 p->missiles.removeRef( missile );
                 break;
             }
@@ -642,7 +642,7 @@ void KAsteroidsView::processShip(Player *p)
                         p->shieldOn = FALSE;
                         break;
                     }
-                    rockHit( static_cast<AnimatedPixmapItem *>(*it) );
+                    rockHit(p, static_cast<AnimatedPixmapItem *>(*it));
                     // the more shields we have the less costly
                     p->reducePower(factor * (SHIELD_HIT_COST - p->mShieldCount*2));
                 }

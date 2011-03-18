@@ -136,7 +136,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     view = new KAsteroidsView(player1, player2, mainWin);
     view->setFocusPolicy( Qt::StrongFocus );
     connect( view, SIGNAL( shipKilled(Player *) ), SLOT( slotShipKilled(Player *) ) );
-    connect( view, SIGNAL( rockHit(int) ), SLOT( slotRockHit(int) ) );
+    connect( view, SIGNAL( rockHit(Player *, int) ), SLOT( slotRockHit( Player *,int) ) );
     connect( view, SIGNAL( rocksRemoved() ), SLOT( slotRocksRemoved() ) );
     connect( view, SIGNAL( updateVitals() ), SLOT( slotUpdateVitals() ) );
 
@@ -450,7 +450,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     keySettings = new Settings(&Keys);
     connect(keySettings, SIGNAL( SubmitKeyChange(KeySettings) ), this, SLOT( mapKeys(KeySettings) ));
 
-    view->showText( tr( "N - 1 Player ---- M - 2 Players ---- F1 Controls" ), Qt::yellow );
+    view->showText( tr( "N - 1 Player ---- M - 2 Players ---- F1 -  Controls" ), Qt::yellow );
 }
 
 KAstTopLevel::~KAstTopLevel()
@@ -774,26 +774,26 @@ void KAstTopLevel::slotShipKilled(Player *p)
     }
 }
 
-void KAstTopLevel::slotRockHit( int size )
+void KAstTopLevel::slotRockHit(Player *p, int size)
 {
     switch ( size )
     {
 	case 0:
-        player1->score += 10;
+        p->score += 10;
          break;
 
 	case 1:
-        player1->score += 20;
+        p->score += 20;
 	    break;
 
 	default:
-        player1->score += 40;
+        p->score += 40;
       }
 
     playSound( "RockDestroyed" );
 
     player1->scoreLCD->display( player1->score );
-    player2->scoreLCD->display( player1->score );
+    player2->scoreLCD->display( player2->score );
 }
 
 void KAstTopLevel::slotRocksRemoved()
@@ -823,7 +823,7 @@ void KAstTopLevel::doStats()
       .arg(r);
 */
 
-    view->showText( "Game Over: N - 1 Player ---- M - 2 Players.", Qt::yellow, FALSE );
+    view->showText( "Game Over: N - 1 Player ---- M - 2 Players ---- F1 - Controls", Qt::yellow, FALSE );
 }
 
 void KAstTopLevel::slotUpdateVitals()

@@ -87,7 +87,7 @@ private slots:
     void slotNewGame(bool twoPlayer);
 
     void slotShipKilled(Player *p);
-    void slotRockHit( int size );
+    void slotRockHit(Player *p, int size);
     void slotRocksRemoved();
 
     void slotUpdateVitals();

@@ -85,8 +85,8 @@ public:
     void pause(bool p);
 
 signals:
-    void shipKilled(Player *);
-    void rockHit( int size );
+    void shipKilled(Player *p);
+    void rockHit(Player *p, int size);
     void rocksRemoved();
     void updateVitals();
 
@@ -94,7 +94,7 @@ signals:
 protected:
     bool readSprites();
     void wrapSprite( QGraphicsItem * );
-    void rockHit( AnimatedPixmapItem * );
+    void rockHit(Player *p, AnimatedPixmapItem *);
     void addExhaust( double x, double y, double dx, double dy, int count );
     void processMissiles(Player *p);
     void processShip(Player *p);
