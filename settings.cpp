@@ -108,6 +108,25 @@ QString Settings::keyString(int value)
         return "PgDown";
         break;
 
+    case Qt::Key_Space:
+        return "Space";
+        break;
+    case Qt::Key_Shift:
+        return "Shift";
+        break;
+    case Qt::Key_Enter:
+        return "Enter";
+        break;
+    case Qt::Key_Return:
+        return "Return";
+        break;
+    case Qt::Key_Alt:
+        return "Alt";
+        break;
+    case Qt::Key_Control:
+        return "Ctrl";
+        break;
+
     case Qt::Key_Left:
         return "Left Arrow";
         break;
