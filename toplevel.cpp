@@ -467,6 +467,8 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
 
     if(event->key() == Qt::Key_F1)
     {
+        delete keySettings;
+        keySettings = new Settings(&Keys);
         keySettings->show();
         return;
     }
