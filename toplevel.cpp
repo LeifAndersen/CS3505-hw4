@@ -450,7 +450,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     keySettings = new Settings(&Keys);
     connect(keySettings, SIGNAL( SubmitKeyChange(KeySettings) ), this, SLOT( mapKeys(KeySettings) ));
 
-    view->showText( tr( "N - 1 Player ---- M - 2 Players" ), Qt::yellow );
+    view->showText( tr( "N - 1 Player ---- M - 2 Players ---- F1 Controls" ), Qt::yellow );
 }
 
 KAstTopLevel::~KAstTopLevel()

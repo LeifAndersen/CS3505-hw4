@@ -114,7 +114,7 @@ kas_animations [] =
 KAsteroidsView::KAsteroidsView(Player *player1, Player *player2,
                                QWidget *parent, const char *name)
                                    : QWidget( parent, name ),
-                                   field(0, 0, 640, 440),
+                                   field(0, 0, 942, 690),
                                    view(&field,this)
 {
     // Set the players
