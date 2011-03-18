@@ -53,10 +53,10 @@
   <widget class="QLabel" name="Player1a">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>50</x>
      <y>50</y>
-     <width>31</width>
-     <height>16</height>
+     <width>71</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="font">
@@ -67,14 +67,17 @@
    <property name="text">
     <string>Thrust</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="Player1b">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>10</x>
      <y>90</y>
-     <width>21</width>
-     <height>16</height>
+     <width>71</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
@@ -84,6 +87,9 @@
    </property>
    <property name="text">
     <string>Left</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="Player1d">
@@ -107,10 +113,10 @@
   <widget class="QLabel" name="Player1c">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>100</x>
      <y>90</y>
-     <width>31</width>
-     <height>16</height>
+     <width>61</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
@@ -120,6 +126,9 @@
    </property>
    <property name="text">
     <string>Right</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="Player1e">
@@ -200,10 +209,10 @@
   <widget class="QLabel" name="Player2b">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>180</x>
      <y>90</y>
-     <width>21</width>
-     <height>16</height>
+     <width>71</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="font">
@@ -214,14 +223,17 @@
    <property name="text">
     <string>Left</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="Player2c">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>270</x>
      <y>90</y>
-     <width>31</width>
-     <height>16</height>
+     <width>81</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
@@ -232,14 +244,17 @@
    <property name="text">
     <string>Right</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="Player2a">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>230</x>
      <y>50</y>
-     <width>31</width>
-     <height>16</height>
+     <width>71</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="font">
@@ -249,6 +264,9 @@
    </property>
    <property name="text">
     <string>Thrust</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="Player2f">

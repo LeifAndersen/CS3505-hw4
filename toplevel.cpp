@@ -469,6 +469,7 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
     {
         delete keySettings;
         keySettings = new Settings(&Keys);
+        connect(keySettings, SIGNAL( SubmitKeyChange(KeySettings) ), this, SLOT( mapKeys(KeySettings) ));
         keySettings->show();
         return;
     }

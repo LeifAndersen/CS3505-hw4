@@ -87,7 +87,7 @@ QString Settings::keyString(int value)
         return "Esc";
         break;
     case Qt::Key_Backspace:
-        return "BackSpace";
+        return "BackSpc";
         break;
     case Qt::Key_Insert:
         return "Insert";
@@ -128,16 +128,16 @@ QString Settings::keyString(int value)
         break;
 
     case Qt::Key_Left:
-        return "Left Arrow";
+        return "Lt Arrow";
         break;
     case Qt::Key_Right:
-        return "Right Arrow";
+        return "Rt Arrow";
         break;
     case Qt::Key_Up:
         return "Up Arrow";
         break;
     case Qt::Key_Down:
-        return "Down Arrow";
+        return "Dwn Arrow";
         break;
     default:
         return "UNKNOWN";
