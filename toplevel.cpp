@@ -763,7 +763,7 @@ void KAstTopLevel::slotShipKilled(Player *p)
     if (p->shipsRemain )
     {
         p->waitShip = TRUE;
-        view->showText( tr( "Ship Destroyed. Press L to launch."), Qt::yellow );
+        view->showText( tr("Ship Destroyed Press: P1-L, P2-7 to relaunch"), Qt::yellow );
     }
     else if(!player1->shipsRemain || !player2->shipsRemain)
     {
@@ -823,7 +823,10 @@ void KAstTopLevel::doStats()
       .arg(r);
 */
 
-    view->showText( "Game Over: N - 1 Player ---- M - 2 Players ---- F1 - Controls", Qt::yellow, FALSE );
+    if(!player1->shipsRemain && !player2->shipsRemain)
+        view->showText( "Game Over: N - 1 Player ---- M - 2 Players ---- F1 - Controls", Qt::yellow, FALSE );
+    else
+        view->showText( "Ship Destroyed", Qt::yellow, FALSE );
 }
 
 void KAstTopLevel::slotUpdateVitals()
