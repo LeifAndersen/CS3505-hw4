@@ -3,6 +3,16 @@
 
 #include <QObject>
 #include <QLCDNumber>
+#include <qwidget.h>
+#include <q3ptrlist.h>
+#include <q3intdict.h>
+#include <qtimer.h>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+//Added by qt3to4:
+#include <QTimerEvent>
+#include <QShowEvent>
+#include <QResizeEvent>
 
 #include "ledmeter.h"
 #include "sprites.h"
@@ -15,6 +25,8 @@
 #define SHIELD_ON_COST          1
 #define SHIELD_HIT_COST         30
 #define BRAKE_ON_COST           4
+#define MAX_POWER_LEVEL          1000
+
 
 enum Action { Launch, Thrust, RotateLeft, RotateRight, Shoot, Teleport,
                 Brake, Shield, Pause, NewGame  };
@@ -30,6 +42,8 @@ public:
     int power() const { return shipPower; }
     void shoot(bool s) {shootShip = s; shootDelay = 0; }
     void reducePower(int val);
+    void setShield(bool s);
+    void newShip(int x, int y);
 
     // Fields
     int shipsRemain;
@@ -79,10 +93,16 @@ public:
     int shotsHit;
     int shootDelay;
 
+    bool initialized;
+    QTimer *shieldTimer;
+
 signals:
 
 public slots:
 
+
+private slots:
+    void hideShield();
 };
 
 #endif // PLAYER_H

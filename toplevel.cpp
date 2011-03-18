@@ -498,7 +498,7 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
             break;
 
         case Shield:
-            view->setShield(player2, TRUE);
+            player2->setShield(TRUE);
             break;
 
         case Teleport:
@@ -539,7 +539,7 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
         break;
 
     case Shield:
-        view->setShield(player1, TRUE);
+        player1->setShield(TRUE);
         break;
 
     case Teleport:
@@ -594,7 +594,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
             break;
 
         case Shield:
-            view->setShield(player2, FALSE);
+            player2->setShield(FALSE);
             break;
 
         case Teleport:
@@ -604,7 +604,9 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
         case Launch:
             if (player2->waitShip)
             {
-                view->newShip(player2);
+                player1->newShip(view->width()/4, view->height()/2);
+                player2->newShip(view->width()*3/4, view->height()/2);
+                player1->waitShip = FALSE;
                 player2->waitShip = FALSE;
                 view->hideText();
             }
@@ -663,7 +665,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
         break;
 
     case Shield:
-        view->setShield(player1, FALSE);
+        player1->setShield(FALSE);
         break;
 
     case Teleport:
@@ -673,7 +675,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
     case Launch:
         if (player1->waitShip)
         {
-            view->newShip(player1);
+            player1->newShip(view->width()/2, view->height()/2);
             player1->waitShip = FALSE;
             view->hideText();
         }
@@ -737,7 +739,7 @@ void KAstTopLevel::slotNewGame(bool twoPlayer)
     view->setRockSpeed( levels[0].rockSpeed );
     view->addRocks( levels[0].nrocks );
 //    view->showText( tr( "Press L to launch." ), yellow );
-    view->newShip(player1);
+    player1->newShip(view->width()/2, view->height()/2);
     player1->waitShip = FALSE;
     player2->waitShip = FALSE;
     view->hideText();
