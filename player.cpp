@@ -90,3 +90,18 @@ void Player::setShield(bool s)
         shieldOn = s && mShieldCount;
     }
 }
+
+void Player::brake(bool b)
+{
+    if (!initialized)
+        return;
+    if (mBrakeCount) {
+        if (brakeShip && !b) {
+            rotateL = FALSE;
+            rotateR = FALSE;
+            thrustShip = FALSE;
+            rotateRate = ROTATE_RATE;
+        }
+        brakeShip = b;
+    }
+}

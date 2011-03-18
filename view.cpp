@@ -261,23 +261,6 @@ void KAsteroidsView::pause( bool p )
 
 // - - -
 
-void KAsteroidsView::brake(Player *p, bool b)
-{
-    if (!initialized)
-        return;
-    if (p->mBrakeCount) {
-        if (p->brakeShip && !b) {
-            p->rotateL = FALSE;
-            p->rotateR = FALSE;
-            p->thrustShip = FALSE;
-            p->rotateRate = ROTATE_RATE;
-        }
-        p->brakeShip = b;
-    }
-}
-
-// - - -
-
 bool KAsteroidsView::readSprites()
 {
     QString sprites_prefix = ":/trolltech/examples/graphicsview/portedasteroids/sprites/";

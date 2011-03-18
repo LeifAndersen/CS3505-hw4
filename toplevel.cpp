@@ -485,15 +485,15 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
         switch ( a )
         {
         case RotateLeft:
-            view->rotateLeft(player2, TRUE);
+            player2->rotateLeft(TRUE);
             break;
 
         case RotateRight:
-            view->rotateRight(player2, TRUE);
+            player2->rotateRight(TRUE);
             break;
 
         case Thrust:
-            view->thrust(player2, TRUE);
+            player2->thrust(TRUE);
             break;
 
         case Shoot:
@@ -505,11 +505,11 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
             break;
 
         case Teleport:
-            view->teleport(player2, TRUE);
+            player2->teleport(TRUE);
             break;
 
         case Brake:
-            view->brake(player2, TRUE);
+            player2->brake(TRUE);
             break;
 
         default:
@@ -526,15 +526,15 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
     switch (a)
     {
     case RotateLeft:
-        view->rotateLeft(player1, TRUE);
+        player1->rotateLeft(TRUE);
         break;
 
     case RotateRight:
-        view->rotateRight(player1, TRUE);
+        player1->rotateRight(TRUE);
         break;
 
     case Thrust:
-        view->thrust(player1, TRUE);
+        player1->thrust(TRUE);
         break;
 
     case Shoot:
@@ -546,11 +546,11 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
         break;
 
     case Teleport:
-        view->teleport(player1, TRUE);
+        player1->teleport(TRUE);
         break;
 
     case Brake:
-        view->brake(player1, TRUE);
+        player1->brake(TRUE);
         break;
 
     default:
@@ -577,15 +577,15 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
         switch (a)
         {
         case RotateLeft:
-            view->rotateLeft(player2, FALSE);
+            player2->rotateLeft(FALSE);
             break;
 
         case RotateRight:
-            view->rotateRight(player2, FALSE);
+            player2->rotateRight(FALSE);
             break;
 
         case Thrust:
-            view->thrust(player2, FALSE);
+            player2->thrust(FALSE);
             break;
 
         case Shoot:
@@ -593,7 +593,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
             break;
 
         case Brake:
-            view->brake(player2, FALSE);
+            player2->brake(FALSE);
             break;
 
         case Shield:
@@ -601,7 +601,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
             break;
 
         case Teleport:
-            view->teleport(player2, FALSE);
+            player2->teleport(FALSE);
             break;
 
         case Launch:
@@ -646,15 +646,15 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
     switch (a)
     {
     case RotateLeft:
-        view->rotateLeft(player1, FALSE);
+        player1->rotateLeft(FALSE);
         break;
 
     case RotateRight:
-        view->rotateRight(player1, FALSE);
+        player1->rotateRight(FALSE);
         break;
 
     case Thrust:
-        view->thrust(player1, FALSE);
+        player1->thrust(FALSE);
         break;
 
     case Shoot:
@@ -662,7 +662,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
         break;
 
     case Brake:
-        view->brake(player1, FALSE);
+        player1->brake(FALSE);
         break;
 
     case Shield:
@@ -670,7 +670,7 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
         break;
 
     case Teleport:
-        view->teleport(player1, FALSE);
+        player1->teleport(FALSE);
         break;
 
     case Launch:
@@ -829,15 +829,15 @@ void KAstTopLevel::doStats()
 void KAstTopLevel::slotUpdateVitals()
 {
     // Player 1
-    player1->brakesLCD->display(view->brakeCount(player1) );
-    player1->shieldLCD->display(view->shieldCount(player1) );
-    player1->shootLCD->display(view->shootCount(player1) );
+    player1->brakesLCD->display(player1->brakeCount() );
+    player1->shieldLCD->display(player1->shieldCount() );
+    player1->shootLCD->display(player1->shootCount() );
     player1->powerMeter->setValue(player1->power() );
 
     // Player 2
-    player2->brakesLCD->display(view->brakeCount(player2));
-    player2->shieldLCD->display(view->shieldCount(player2));
-    player2->shootLCD->display(view->shootCount(player2));
+    player2->brakesLCD->display(player2->brakeCount());
+    player2->shieldLCD->display(player2->shieldCount());
+    player2->shootLCD->display(player2->shootCount());
     player2->powerMeter->setValue(player2->power());
 }
 

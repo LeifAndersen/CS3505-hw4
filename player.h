@@ -40,6 +40,19 @@ public:
     int shots() const { return shotsFired; }
     int hits() const { return shotsHit; }
     int power() const { return shipPower; }
+
+    void rotateLeft(bool r) { rotateL = r; rotateSlow = 5; }
+    void rotateRight(bool r) { rotateR = r; rotateSlow = 5; }
+    void thrust(bool t) { thrustShip = t && shipPower > 0; }
+    void teleport(bool te) { teleportShip = te && mTeleportCount; }
+    void brake(bool b);
+
+    int teleportCount() const { return mTeleportCount; }
+    int brakeCount() const { return mBrakeCount; }
+    int shieldCount() const { return mShieldCount; }
+    int shootCount() const { return mShootCount; }
+
+
     void shoot(bool s) {shootShip = s; shootDelay = 0; }
     void reducePower(int val);
     void setShield(bool s);

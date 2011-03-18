@@ -79,20 +79,10 @@ public:
     void newGame();
     void endGame();
 
-    void rotateLeft( Player *p, bool r ) { p->rotateL = r; p->rotateSlow = 5; }
-    void rotateRight( Player *p, bool r ) { p->rotateR = r; p->rotateSlow = 5; }
-    void thrust( Player *p, bool t ) { p->thrustShip = t && p->shipPower > 0; }
-    void teleport( Player *p, bool te) { p->teleportShip = te && p->mTeleportCount; }
-    void brake( Player *p, bool b );
-    void pause( bool p);
-
     void showText( const QString &text, const QColor &color, bool scroll=TRUE );
     void hideText();
 
-    int teleportCount( Player *p ) const { return p->mTeleportCount; }
-    int brakeCount( Player *p ) const { return p->mBrakeCount; }
-    int shieldCount( Player *p ) const { return p->mShieldCount; }
-    int shootCount( Player *p ) const { return p->mShootCount; }
+    void pause(bool p);
 
 signals:
     void shipKilled(Player *);
