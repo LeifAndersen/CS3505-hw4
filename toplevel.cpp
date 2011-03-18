@@ -128,7 +128,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     borderLayout->addStretch( 1 );
 
     QWidget *mainWin = new QWidget( border );
-    mainWin->setFixedSize(1024, 768);
+    mainWin->setFixedSize(942, 690);
     borderLayout->addWidget( mainWin, 0, Qt::AlignHCenter );
 
     borderLayout->addStretch( 1 );
