@@ -746,6 +746,7 @@ void KAstTopLevel::slotNewGame(bool twoPlayer)
         player2->newShip(view->width()*3/4, view->height()/2);
     } else {
         player1->newShip(view->width()/2, view->height()/2);
+        player2->ship->hide();
     }
     player1->waitShip = FALSE;
     player2->waitShip = FALSE;
