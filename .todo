@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <todo version="0.1.20">
-    <note priority="medium" time="1299959484">
+    <note priority="medium" time="1299959484" done="1300488977">
         Keep track of ships seperatly
     </note>
-    <note priority="medium" time="1299959517">
+    <note priority="medium" time="1299959517" done="1300488981">
         Keep track of power and powerups seperatly
-    </note>
-    <note priority="medium" time="1299959538">
-        Get two ship objects
     </note>
     <note priority="medium" time="1299978023" done="1299978624">
         Make bullot go further
         <comment>
             It was in some constants in sprites.h
         </comment>
+    </note>
+    <note priority="medium" time="1299959538" done="1300488986">
+        Get two ship objects
     </note>
 </todo>
