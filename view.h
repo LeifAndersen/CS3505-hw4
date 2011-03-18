@@ -61,8 +61,8 @@
 #include "sprites.h"
 
 #include "player.h"
-
 #define MAX_POWER_LEVEL          1000
+
 
 class KAsteroidsView : public QWidget
 {
@@ -78,12 +78,10 @@ public:
     void addRocks( int num );
     void newGame();
     void endGame();
-    void newShip(Player *p);
 
     void rotateLeft( Player *p, bool r ) { p->rotateL = r; p->rotateSlow = 5; }
     void rotateRight( Player *p, bool r ) { p->rotateR = r; p->rotateSlow = 5; }
     void thrust( Player *p, bool t ) { p->thrustShip = t && p->shipPower > 0; }
-    void setShield( Player *p, bool s );
     void teleport( Player *p, bool te) { p->teleportShip = te && p->mTeleportCount; }
     void brake( Player *p, bool b );
     void pause( bool p);
@@ -102,8 +100,6 @@ signals:
     void rocksRemoved();
     void updateVitals();
 
-private slots:
-    void hideShield();
 
 protected:
     bool readSprites();
@@ -142,8 +138,6 @@ private:
     double powerupSpeed;
 
     bool can_destroy_powerups;
-
-    QTimer *shieldTimer;
     bool initialized;
 
     Player *player1;
