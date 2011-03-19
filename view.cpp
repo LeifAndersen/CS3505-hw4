@@ -433,9 +433,10 @@ void KAsteroidsView::timerEvent(QTimerEvent *)
             textDy = 0;
     }
 
-    if ( player1->vitalsChanged && !(mFrameNum % 10) ) {
+    if ( (player1->vitalsChanged || player2->vitalsChanged) && !(mFrameNum % 10) ) {
         emit updateVitals();
         player1->vitalsChanged = FALSE;
+        player2->vitalsChanged = FALSE;
     }
 
     mFrameNum++;

@@ -84,7 +84,7 @@ protected:
     virtual void keyReleaseEvent( QKeyEvent *event );
 
 private slots:
-    void slotNewGame(bool twoPlayer);
+    void slotNewGame(bool twoPlayers);
 
     void slotShipKilled(Player *p);
     void slotRockHit(Player *p, int size);
