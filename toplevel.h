@@ -38,13 +38,16 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 /*
  * KAsteroids - Copyright (c) Martin R. Jones 1997
  *
  * Part of the KDE project
  */
-
+/*
+ * Modifications from Leif Andersen, Robert Christensen.
+ *
+ * (c) (on changes) TEAM: KatastrofieMarch 2011
+ */
 #ifndef __KAST_TOPLEVEL_H__
 #define __KAST_TOPLEVEL_H__
 

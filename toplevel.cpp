@@ -44,6 +44,11 @@
  *
  * Part of the KDE project
  */
+/*
+ * Modifications from Leif Andersen, Robert Christensen.
+ *
+ * (c) (on changes) TEAM: KatastrofieMarch 2011
+ */
 //	--- toplevel.cpp ---
 #include <q3accel.h>
 #include <qlabel.h>
