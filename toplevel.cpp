@@ -44,6 +44,11 @@
  *
  * Part of the KDE project
  */
+/*
+ * Modifications from Leif Andersen, Robert Christensen.
+ *
+ * (c) (on changes) TEAM: KatastrofieMarch 2011
+ */
 //	--- toplevel.cpp ---
 #include <q3accel.h>
 #include <qlabel.h>
@@ -722,26 +727,39 @@ void KAstTopLevel::hideEvent( QHideEvent *e )
     view->pause( TRUE );
 }
 
-void KAstTopLevel::slotNewGame(bool twoPlayer)
+void KAstTopLevel::slotNewGame(bool twoPlayers)
 {
+    // Reset the data
     player1->score = 0;
     player2->score = 0;
     player1->shipsRemain = SB_SHIPS;
-    if(twoPlayer)
+    if(twoPlayers)
         player2->shipsRemain = SB_SHIPS;
     else
         player2->shipsRemain = 1;
+    player1->mBrakeCount = 0;
+    player1->mTeleportCount = 0;
+    player1->mShootCount = 0;
+    player2->mBrakeCount = 0;
+    player2->mTeleportCount = 0;
+    player2->mShootCount = 0;
+    level = 0;
+
+    // Set the gui
     player1->scoreLCD->display( 0 );
     player2->scoreLCD->display( 0 );
-    level = 0;
     levelLCD->display( level+1 );
     player1->shipsLCD->display( player1->shipsRemain-1 );
     player2->shipsLCD->display( player2->shipsRemain-1 );
+
+    // Start the game
     view->newGame();
     view->setRockSpeed( levels[0].rockSpeed );
     view->addRocks( levels[0].nrocks );
 //    view->showText( tr( "Press L to launch." ), yellow );
-    if(twoPlayer) {
+
+    // Start the ships
+    if(twoPlayers) {
         player1->newShip(view->width()/4, view->height()/2);
         player2->newShip(view->width()*3/4, view->height()/2);
     } else {

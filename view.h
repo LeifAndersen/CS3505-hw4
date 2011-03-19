@@ -44,7 +44,11 @@
  *
  * Part of the KDE project
  */
-
+/*
+ * Modifications from Leif Andersen, Robert Christensen.
+ *
+ * (c) (on changes) TEAM: KatastrofieMarch 2011
+ */
 #ifndef __AST_VIEW_H__
 #define __AST_VIEW_H__
 

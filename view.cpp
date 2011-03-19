@@ -44,7 +44,11 @@
  *
  * Part of the KDE project
  */
-
+/*
+ * Modifications from Leif Andersen, Robert Christensen.
+ *
+ * (c) (on changes) TEAM: KatastrofieMarch 2011
+ */
 #include <stdlib.h>
 #include <math.h>
 #include <qapplication.h>
@@ -433,9 +437,10 @@ void KAsteroidsView::timerEvent(QTimerEvent *)
             textDy = 0;
     }
 
-    if ( player1->vitalsChanged && !(mFrameNum % 10) ) {
+    if ( (player1->vitalsChanged || player2->vitalsChanged) && !(mFrameNum % 10) ) {
         emit updateVitals();
         player1->vitalsChanged = FALSE;
+        player2->vitalsChanged = FALSE;
     }
 
     mFrameNum++;

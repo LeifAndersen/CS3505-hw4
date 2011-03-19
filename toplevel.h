@@ -38,13 +38,16 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 /*
  * KAsteroids - Copyright (c) Martin R. Jones 1997
  *
  * Part of the KDE project
  */
-
+/*
+ * Modifications from Leif Andersen, Robert Christensen.
+ *
+ * (c) (on changes) TEAM: KatastrofieMarch 2011
+ */
 #ifndef __KAST_TOPLEVEL_H__
 #define __KAST_TOPLEVEL_H__
 
@@ -84,7 +87,7 @@ protected:
     virtual void keyReleaseEvent( QKeyEvent *event );
 
 private slots:
-    void slotNewGame(bool twoPlayer);
+    void slotNewGame(bool twoPlayers);
 
     void slotShipKilled(Player *p);
     void slotRockHit(Player *p, int size);

@@ -1,3 +1,11 @@
+/* Leif Andersen, Robert Christensen
+ * (c) TEAM: Katastrofie, 2011
+ *
+ * Released under the terms of the LGPL v2.1
+ * as part of a modification of the KAstroids projec
+ * (from the qt demo library), which is where most of
+ * the code came from.
+ */
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
