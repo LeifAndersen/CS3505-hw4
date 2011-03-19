@@ -881,6 +881,10 @@ void KAstTopLevel::mapKeys( KeySettings newSettings )
     player1->actions.insert( newSettings.player1_brake, Brake );
     player1->actions.insert( newSettings.player1_shield, Shield );
 
+    player1->actions.insert( Qt::Key_P, Pause );
+    player1->actions.insert( Qt::Key_L, Launch );
+    player1->actions.insert( Qt::Key_N, NewGame );
+
     player2->actions.remove( Keys.player2_thrust );
     player2->actions.remove( Keys.player2_left );
     player2->actions.remove( Keys.player2_right );
@@ -896,6 +900,10 @@ void KAstTopLevel::mapKeys( KeySettings newSettings )
     // player1->actions.insert( Qt::Key_Z, Teleport );
     player2->actions.insert( newSettings.player2_brake, Brake );
     player2->actions.insert( newSettings.player2_shield, Shield );
+
+    player2->actions.insert( Qt::Key_division, Pause );
+    player2->actions.insert( Qt::Key_7, Launch );
+    player2->actions.insert( Qt::Key_M, NewGame );
 
     Keys = newSettings;
 }
