@@ -865,6 +865,10 @@ void KAstTopLevel::doStats()
     if ( player1->shots() )
      r = QString::number( (double)player1->hits() / player1->shots() * 100.0,
                  'g', 2 );
+    QString w( "0.00" );
+    if ( player2->shots() )
+     w = QString::number( (double)player2->hits() / player2->shots() * 100.0,
+                 'g', 2 );
 
 /* multi-line text broken in Qt 3
     QString s = tr( "Game Over\n\nShots fired:\t%1\n  Hit:\t%2\n  Missed:\t%3\nHit ratio:\t%4 %\n\nPress N for a new game" )
@@ -873,10 +877,7 @@ void KAstTopLevel::doStats()
       .arg(r);
 */
 
-    if(!player1->shipsRemain && !player2->shipsRemain)
-        view->showText( "Game Over: N - 1 Player ---- M - 2 Players ---- F1 - Controls", Qt::yellow, FALSE );
-    else
-        view->showText( "Ship Destroyed", Qt::yellow, FALSE );
+    view->showText( "Ship Destroyed: N - 1 Player ---- M - 2 Players ---- F1 - Controls", Qt::yellow, FALSE );
 }
 
 
