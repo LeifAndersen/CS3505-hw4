@@ -72,46 +72,96 @@ class KAstTopLevel : public Q3MainWindow
 {
     Q_OBJECT
 public:
+    /**
+      * creates the new toplevel (such as window)
+      */
     KAstTopLevel( QWidget *parent=0, const char *name=0 );
+
+    /**
+      * Destructs the game
+      */
     virtual ~KAstTopLevel();
 
 private:
+    // Currently does nothing
     void playSound( const char *snd );
     void readSoundMapping();
     void doStats();
 
 protected:
+    /**
+      * Ship show event
+      */
     virtual void showEvent( QShowEvent * );
+
+    /**
+      * Ship hide event
+      */
     virtual void hideEvent( QHideEvent * );
+
+    /**
+      * Key press event
+      */
     virtual void keyPressEvent( QKeyEvent *event );
+
+    /**
+      * Key release event
+      */
     virtual void keyReleaseEvent( QKeyEvent *event );
 
 private slots:
+    /**
+      * Called when a new game is started
+      */
     void slotNewGame(bool twoPlayers);
 
+    /**
+      * Called when the ship is killed
+      */
     void slotShipKilled(Player *p);
+
+    /**
+      * Called when a rock is hit
+      */
     void slotRockHit(Player *p, int size);
+
+    /**
+      * Called when rock is removed
+      */
     void slotRocksRemoved();
 
+    /**
+      * Called to update vitals
+      */
     void slotUpdateVitals();
 
+    /**
+      * Map keybindings
+      */
     void mapKeys( KeySettings );
 
 private:
+    // Window stuff
     KAsteroidsView *view;
     Settings *keySettings;
     KeySettings Keys;
-
     QLCDNumber *levelLCD;
 
+    // Sound, not used
     bool   sound;
     Q3Dict<QString> soundDict;
 
     // waiting for user to press Enter to launch a ship
     bool isPaused;
+
+    // the players for the game
     Player *player1;
     Player *player2;
+
+    // level
     int level;
+
+    // highscores, not used.
     bool showHiscores;
 };
 

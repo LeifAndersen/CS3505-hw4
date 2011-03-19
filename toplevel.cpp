@@ -116,7 +116,9 @@ const char *soundDefaults[] =
     0
 };
 
-
+/**
+  * creates the new toplevel (such as window)
+  */
 KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     : Q3MainWindow( parent, name, 0 )
 {
@@ -459,14 +461,22 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
     view->showText( tr( "N - 1 Player ---- M - 2 Players ---- F1 -  Controls" ), Qt::yellow );
 }
 
+/**
+  * Destructs the game
+  */
 KAstTopLevel::~KAstTopLevel()
 {
+    delete player1;
+    delete player2;
 }
 
 void KAstTopLevel::playSound( const char * )
 {
 }
 
+/**
+  * Key press event
+  */
 void KAstTopLevel::keyPressEvent( QKeyEvent *event )
 {
     Action a;
@@ -568,6 +578,9 @@ void KAstTopLevel::keyPressEvent( QKeyEvent *event )
 
 }
 
+/**
+  * Key release event
+  */
 void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
 {
     Action a;
@@ -714,6 +727,9 @@ void KAstTopLevel::keyReleaseEvent( QKeyEvent *event )
     event->accept();
 }
 
+/**
+  * Ship show event
+  */
 void KAstTopLevel::showEvent( QShowEvent *e )
 {
     Q3MainWindow::showEvent( e );
@@ -721,12 +737,18 @@ void KAstTopLevel::showEvent( QShowEvent *e )
     view->setFocus();
 }
 
+/**
+  * Ship hide event
+  */
 void KAstTopLevel::hideEvent( QHideEvent *e )
 {
     Q3MainWindow::hideEvent( e );
     view->pause( TRUE );
 }
 
+/**
+  * Called when a new game is started
+  */
 void KAstTopLevel::slotNewGame(bool twoPlayers)
 {
     // Reset the data
@@ -772,6 +794,9 @@ void KAstTopLevel::slotNewGame(bool twoPlayers)
     isPaused = FALSE;
 }
 
+/**
+  * Called when the ship is killed
+  */
 void KAstTopLevel::slotShipKilled(Player *p)
 {
     p->shipsRemain--;
@@ -793,6 +818,9 @@ void KAstTopLevel::slotShipKilled(Player *p)
     }
 }
 
+/**
+  * Called when a rock is hit
+  */
 void KAstTopLevel::slotRockHit(Player *p, int size)
 {
     switch ( size )
@@ -815,6 +843,9 @@ void KAstTopLevel::slotRockHit(Player *p, int size)
     player2->scoreLCD->display( player2->score );
 }
 
+/**
+  * Called when rock is removed
+  */
 void KAstTopLevel::slotRocksRemoved()
 {
     level++;
@@ -848,6 +879,10 @@ void KAstTopLevel::doStats()
         view->showText( "Ship Destroyed", Qt::yellow, FALSE );
 }
 
+
+/**
+  * Called to update vitals
+  */
 void KAstTopLevel::slotUpdateVitals()
 {
     // Player 1
@@ -863,6 +898,9 @@ void KAstTopLevel::slotUpdateVitals()
     player2->powerMeter->setValue(player2->power());
 }
 
+/**
+  * Map keybindings
+  */
 void KAstTopLevel::mapKeys( KeySettings newSettings )
 {
     player1->actions.remove( Keys.player1_thrust );
