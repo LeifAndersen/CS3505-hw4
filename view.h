@@ -67,52 +67,157 @@
 #include "player.h"
 #define MAX_POWER_LEVEL          1000
 
-
+/**
+  * Most of the logics (and some of the gui)
+  * for the game.  Also contains the game's physics engine
+  * inside of the process*() code.
+  */
 class KAsteroidsView : public QWidget
 {
     Q_OBJECT
 public:
+    /**
+      * Construct a KAstroidView
+      *
+      * Players for the game
+      */
     KAsteroidsView(Player *player1, Player *player2, QWidget *parent = 0, const char *name = 0);
+
+    /**
+      * Destruct the KAstreroid view
+      */
     virtual ~KAsteroidsView();
 
+    // Refresh rate for the game
     int refreshRate;
 
+    /**
+      * Reset the game
+      */
     void reset();
+
+    /**
+      * Set rock speed
+      */
     void setRockSpeed( double rs ) { rockSpeed = rs; }
+
+    /**
+      * Add a rock
+      */
     void addRocks( int num );
+
+    /**
+      * Make a new game
+      */
     void newGame();
+
+    /**
+      * End the game
+      */
     void endGame();
 
+    /**
+      * Show text on the screen
+      */
     void showText( const QString &text, const QColor &color, bool scroll=TRUE );
+
+    /**
+      * Hide the text shown by shown text.
+      */
     void hideText();
 
+    /**
+      * Pause the game
+      */
     void pause(bool p);
 
 signals:
+    /**
+      * set when ships is killed
+      */
     void shipKilled(Player *p);
+
+    /**
+      * called when a rock hits
+      */
     void rockHit(Player *p, int size);
+
+    /**
+      * Called when a rock is removed
+      */
     void rocksRemoved();
+
+    /**
+      * Called to update the vitals
+      */
     void updateVitals();
 
 
 protected:
+    /**
+      * Read sprites
+      */
     bool readSprites();
+
+    /**
+      * Wrap sprite arround if needed.
+      */
     void wrapSprite( QGraphicsItem * );
+
+    /**
+      * Getting hit by a rock
+      */
     void rockHit(Player *p, AnimatedPixmapItem *);
+
+    /**
+      * Place exhaust on the gui
+      */
     void addExhaust( double x, double y, double dx, double dy, int count );
+
+    /**
+      * Run physics on the missiles for the ship
+      */
     void processMissiles(Player *p);
+
+    /**
+      * Run physics on the player's ship.
+      */
     void processShip(Player *p);
+
+    /**
+      * Run physics on the power ups.
+      */
     void processPowerups(Player *p);
+
+    /**
+      * Proces the shield
+      */
     void processShield();
+
+    /**
+      * return a random double
+      */
     double randDouble();
+
+    /**
+      * Return a random integer, from 0 to the range.
+      */
     int randInt( int range );
 
+    /**
+      * Deals with window resizing
+      */
     virtual void resizeEvent( QResizeEvent *event );
+
+    /**
+      * timer for the class
+      */
     virtual void timerEvent(QTimerEvent *);
 
     void showEvent( QShowEvent * );
 
 private:
+    // The world
     QGraphicsScene field;
     QGraphicsView view;
     QMap<int, QList<QPixmap> > animation;
@@ -122,17 +227,17 @@ private:
     Q3PtrList<KPowerup> powerups;
     QGraphicsTextItem *textSprite;
 
+    // Status of the game
     int  textDy;
     int  mFrameNum;
     bool mPaused;
     int  mTimerId;
-
     double rockSpeed;
     double powerupSpeed;
-
     bool can_destroy_powerups;
     bool initialized;
 
+    // Players
     Player *player1;
     Player *player2;
 };

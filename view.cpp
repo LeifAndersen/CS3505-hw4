@@ -115,6 +115,11 @@ kas_animations [] =
     { 0,                   0,                          0 }
 };
 
+/**
+  * Construct a KAstroidView
+  *
+  * Players for the game
+  */
 KAsteroidsView::KAsteroidsView(Player *player1, Player *player2,
                                QWidget *parent, const char *name)
                                    : QWidget( parent, name ),
@@ -180,12 +185,18 @@ KAsteroidsView::KAsteroidsView(Player *player1, Player *player2,
 
 // - - -
 
+/**
+  * Destruct the KAstreroid view
+  */
 KAsteroidsView::~KAsteroidsView()
 {
 }
 
 // - - -
 
+/**
+  * Reset the game
+  */
 void KAsteroidsView::reset()
 {
     if ( !initialized )
@@ -222,8 +233,11 @@ void KAsteroidsView::reset()
 */
 }
 
-// - --
+// - - -
 
+/**
+  * Make a new game
+  */
 void KAsteroidsView::newGame()
 {
     if(!initialized)
@@ -245,10 +259,16 @@ void KAsteroidsView::newGame()
 
 // - - -
 
+/**
+  * End the game
+  */
 void KAsteroidsView::endGame()
 {
 }
 
+/**
+  * Pause the game
+  */
 void KAsteroidsView::pause( bool p )
 {
     if ( !initialized )
@@ -265,6 +285,9 @@ void KAsteroidsView::pause( bool p )
 
 // - - -
 
+/**
+  * Read sprites
+  */
 bool KAsteroidsView::readSprites()
 {
     QString sprites_prefix = ":/trolltech/examples/graphicsview/portedasteroids/sprites/";
@@ -302,6 +325,9 @@ bool KAsteroidsView::readSprites()
 
 // - - -
 
+/**
+  * Add a rock
+  */
 void KAsteroidsView::addRocks( int num )
 {
     if ( !initialized )
@@ -337,6 +363,9 @@ void KAsteroidsView::addRocks( int num )
 
 // - - -
 
+/**
+  * Show text on the screen
+  */
 void KAsteroidsView::showText( const QString &text, const QColor &color, bool scroll )
 {
     if ( !initialized )
@@ -363,6 +392,9 @@ void KAsteroidsView::showText( const QString &text, const QColor &color, bool sc
 
 // - - -
 
+/**
+  * Hide the text shown by shown text.
+  */
 void KAsteroidsView::hideText()
 {
     textDy = -TEXT_SPEED;
@@ -370,6 +402,9 @@ void KAsteroidsView::hideText()
 
 // - - -
 
+/**
+  * Deals with window resizing
+  */
 void KAsteroidsView::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
@@ -379,6 +414,9 @@ void KAsteroidsView::resizeEvent(QResizeEvent* event)
 
 // - - -
 
+/**
+  * timer for the class
+  */
 void KAsteroidsView::timerEvent(QTimerEvent *)
 {
     field.advance();
@@ -446,6 +484,9 @@ void KAsteroidsView::timerEvent(QTimerEvent *)
     mFrameNum++;
 }
 
+/**
+  * Wrap sprite arround if needed.
+  */
 void KAsteroidsView::wrapSprite( QGraphicsItem *s )
 {
     int x = int(s->x() + s->boundingRect().width() / 2);
@@ -464,6 +505,9 @@ void KAsteroidsView::wrapSprite( QGraphicsItem *s )
 
 // - - -
 
+/**
+  * Getting hit by a rock
+  */
 void KAsteroidsView::rockHit(Player *p, AnimatedPixmapItem *hit)
 {
     KPowerup *nPup = 0;
@@ -553,6 +597,9 @@ void KAsteroidsView::rockHit(Player *p, AnimatedPixmapItem *hit)
         emit rocksRemoved();
 }
 
+/**
+  * Place exhaust on the gui
+  */
 void KAsteroidsView::addExhaust( double x, double y, double dx,
                                  double dy, int count )
 {
@@ -565,6 +612,9 @@ void KAsteroidsView::addExhaust( double x, double y, double dx,
     }
 }
 
+/**
+  * Run physics on the missiles for the ship
+  */
 void KAsteroidsView::processMissiles(Player *p)
 {
     KMissile *missile;
@@ -604,6 +654,9 @@ void KAsteroidsView::processMissiles(Player *p)
 
 // - - -
 
+/**
+  * Run physics on the player's ship.
+  */
 void KAsteroidsView::processShip(Player *p)
 {
     if ( p->ship->isVisible() )
@@ -817,6 +870,9 @@ void KAsteroidsView::processShip(Player *p)
 
 // - - -
 
+/**
+  * Run physics on the power ups.
+  */
 void KAsteroidsView::processPowerups(Player *p)
 {
     if ( !powerups.isEmpty() )
@@ -892,12 +948,18 @@ void KAsteroidsView::processPowerups(Player *p)
 
 // - - -
 
+/**
+  * return a random double
+  */
 double KAsteroidsView::randDouble()
 {
     int v = qrand();
     return (double)v / (double)RAND_MAX;
 }
 
+/**
+  * Return a random integer, from 0 to the range.
+  */
 int KAsteroidsView::randInt( int range )
 {
     return qrand() % range;
