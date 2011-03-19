@@ -37,42 +37,124 @@ public:
     int player2_brake;
 };
 
+/**
+  * Settings object, for changing the key configurations of the user.
+  * Currently only for arrow keys and in game actions, but not for launching
+  * new ships or making new games.
+  */
 class Settings : public QDialog
 {
     Q_OBJECT
 
 public:
+    /**
+      * Construct a settings window
+      * parameters for QWidget
+      */
     explicit Settings(KeySettings *currentSettings, QWidget *parent = 0);
+
+    /**
+      * Destruct the settings window.
+      */
     ~Settings();
 
 private:
+
+    // Box taking precidence (selected)
     int activebox;
+
+    // The buttons for the box
     std::vector<QPushButton*> buttons;
+
+    // Settings for the buttons
     KeySettings editedSettings;
+
+    // UI settings
     Ui::Settings *ui;
-    static QString keyString(int); // returns a string representitive of what key is pressed
+
+    // String for the buttons
+    // returns a string representitive of what key is pressed
+    static QString keyString(int);
 private slots:
+
+    /**
+      * Called once the new binding is accepted. (ok button)
+      */
     void on_buttonBox_accepted();
+
+    /**
+      * Change p1 thrust
+      */
     void setP1_thrust();
+
+    /**
+      * Change p1 left
+      */
     void setP1_left();
+
+    /**
+      * Change p1 right
+      */
     void setP1_right();
+
+    /**
+      * Change p1 shield
+      */
     void setP1_shield();
+
+    /**
+      * Change p1 shoot
+      */
     void setP1_shoot();
+
+    /**
+      * Change p1 brake
+      */
     void setP1_brake();
 
+/////
+    /**
+      * Change p2 thrust
+      */
     void setP2_thrust();
+
+    /**
+      * Change p2 left
+      */
     void setP2_left();
+
+    /**
+      * Change p2 right
+      */
     void setP2_right();
+
+    /**
+      * Change p2 shield
+      */
     void setP2_shield();
+
+    /**
+      * Change p2 shoot
+      */
     void setP2_shoot();
+
+    /**
+      * Change p2 brake
+      */
     void setP2_brake();
 
 signals:
+    /**
+      * Signled when a key changes
+      */
     void SubmitKeyChange(KeySettings);
 
 
 protected:
-        virtual void keyPressEvent( QKeyEvent *event );
+    /**
+      * Called when a key is pressed
+      */
+    virtual void keyPressEvent( QKeyEvent *event );
 };
 
 #endif // SETTINGS_H

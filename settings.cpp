@@ -13,6 +13,10 @@
 #include "settings.h"
 #include "ui_settings.h"
 
+/**
+  * Construct a settings window
+  * parameters for QWidget
+  */
 Settings::Settings(KeySettings *currentSettings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Settings)
@@ -152,6 +156,9 @@ QString Settings::keyString(int value)
     }
 }
 
+/**
+  * Change p1 thrust
+  */
 void Settings::setP1_thrust()
 {
     ui->Player1_thrust->setText("");
@@ -159,6 +166,9 @@ void Settings::setP1_thrust()
     ui->line->setFocus();
 }
 
+/**
+  * Change p1 left
+  */
 void Settings::setP1_left()
 {
     ui->Player1_left->setText("");
@@ -166,6 +176,9 @@ void Settings::setP1_left()
     ui->line->setFocus();
 }
 
+/**
+  * Change p1 right
+  */
 void Settings::setP1_right()
 {
     ui->Player1_right->setText("");
@@ -173,6 +186,9 @@ void Settings::setP1_right()
     ui->line->setFocus();
 }
 
+/**
+  * Change p1 shield
+  */
 void Settings::setP1_shield()
 {
     ui->Player1_shield->setText("");
@@ -180,6 +196,9 @@ void Settings::setP1_shield()
     ui->line->setFocus();
 }
 
+/**
+  * Change p1 shoot
+  */
 void Settings::setP1_shoot()
 {
     ui->Player1_shoot->setText("");
@@ -187,13 +206,20 @@ void Settings::setP1_shoot()
     ui->line->setFocus();
 }
 
+/**
+  * Change p1 brake
+  */
 void Settings::setP1_brake()
 {
     ui->Player1_brake->setText("");
     activebox = 5;
     ui->line->setFocus();
 }
+
 ////
+/**
+  * Change p2 thrust
+  */
 void Settings::setP2_thrust()
 {
     ui->Player2_thrust->setText("");
@@ -201,6 +227,9 @@ void Settings::setP2_thrust()
     ui->line->setFocus();
 }
 
+/**
+  * Change p2 left
+  */
 void Settings::setP2_left()
 {
     ui->Player2_left->setText("");
@@ -208,6 +237,9 @@ void Settings::setP2_left()
     ui->line->setFocus();
 }
 
+/**
+  * Change p2 right
+  */
 void Settings::setP2_right()
 {
     ui->Player2_right->setText("");
@@ -215,6 +247,9 @@ void Settings::setP2_right()
     ui->line->setFocus();
 }
 
+/**
+  * Change p2 shield
+  */
 void Settings::setP2_shield()
 {
     ui->Player2_shield->setText("");
@@ -222,6 +257,9 @@ void Settings::setP2_shield()
     ui->line->setFocus();
 }
 
+/**
+  * Change p2 shoot
+  */
 void Settings::setP2_shoot()
 {
     ui->Player2_shoot->setText("");
@@ -229,13 +267,19 @@ void Settings::setP2_shoot()
     ui->line->setFocus();
 }
 
+/**
+  * Change p2 brake
+  */
 void Settings::setP2_brake()
 {
     ui->Player2_brake->setText("");
     activebox = 11;
     ui->line->setFocus();
 }
-////
+
+/**
+  * Called when a key is pressed
+  */
 void Settings::keyPressEvent( QKeyEvent *event )
 {    
     if(activebox>=0)
@@ -298,6 +342,9 @@ void Settings::keyPressEvent( QKeyEvent *event )
     activebox = -1;
 }
 
+/**
+  * Called once the new binding is accepted. (ok button)
+  */
 void Settings::on_buttonBox_accepted()
 {
     emit SubmitKeyChange(editedSettings);
