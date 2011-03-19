@@ -23,12 +23,21 @@
 
 #include "player.h"
 
+/**
+  *Constructs a player
+  * Params: parent, the parent for the qobject, defaults to 0
+  */
 Player::Player(QObject *parent) : QObject(parent) {
     shieldTimer = new QTimer( this );
     connect( shieldTimer, SIGNAL(timeout()), this, SLOT(hideShield()) );
 }
 
-
+/**
+  * Creates a new ship for the player.
+  *
+  * Params: Starting x coordinate for the ship.
+  *         Starting y coordinate for the ship.
+  */
 void Player::newShip(int x, int y)
 {
     if ( !initialized )
@@ -63,7 +72,9 @@ void Player::newShip(int x, int y)
     shieldTimer->start( 1000, TRUE );
 }
 
-
+/**
+  * Hides the ship
+   */
 void Player::hideShield()
 {
     shield->hide();
@@ -71,6 +82,9 @@ void Player::hideShield()
     shieldOn = FALSE;
 }
 
+/**
+  * Reduces the power of the ship.
+  */
 void Player::reducePower(int val)
 {
     shipPower -= val;
@@ -87,6 +101,9 @@ void Player::reducePower(int val)
     vitalsChanged = TRUE;
 }
 
+/**
+  * Set's the ship's shield, given power.
+  */
 void Player::setShield(bool s)
 {
     if (!initialized)
@@ -99,6 +116,9 @@ void Player::setShield(bool s)
     }
 }
 
+/**
+  * Breaks the ship, if the ship can be stopped.
+  */
 void Player::brake(bool b)
 {
     if (!initialized)
