@@ -340,6 +340,7 @@ KAstTopLevel::KAstTopLevel( QWidget *parent, const char *name )
 
     hbd->addSpacing( 10 );
 
+    pm.load( sprites_prefix + "powerups/brake.png" );
     label = new QLabel( mainWin );
     label->setPixmap( pm );
     label->setFixedWidth( label->sizeHint().width() );
